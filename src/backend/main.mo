@@ -10,9 +10,7 @@ import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 import ExternalBlob "blob-storage/Storage";
 import MixinStorage "blob-storage/Mixin";
-import Migration "migration";
 
-(with migration = Migration.run)
 actor {
   // Initialize the authorization system state
   let accessControlState = AccessControl.initState();
@@ -163,12 +161,16 @@ actor {
   };
 
   // Download file chunks with permission checks
+  // Allows guests (anonymous users) to access shared files via share links
   public query ({ caller }) func getFileChunks(id : Text) : async [FileChunk] {
     let meta = switch (uploads.get(id)) {
       case (?meta) { meta };
       case (null) { Runtime.trap("File not found") };
     };
-    if (not meta.isShared and (meta.owner != caller)) {
+    // Allow access if:
+    // 1. File is shared (public access for guests and users)
+    // 2. Caller is the owner (private access)
+    if (not meta.isShared and meta.owner != caller) {
       Runtime.trap("Unauthorized: Private file");
     };
 
@@ -216,21 +218,26 @@ actor {
     };
   };
 
+  // Public access - anyone (including guests) can increment download count for shared files
   public shared func incrementDownloadCount(id : Text) : async () {
-    // Public access - anyone can increment download count when accessing a file
     switch (uploads.get(id)) {
       case (?meta) {
+        // Only allow incrementing download count for shared files
+        if (not meta.isShared) {
+          Runtime.trap("Unauthorized: Cannot track downloads for private files");
+        };
         let updatedMeta = {
           meta with
           downloadCount = meta.downloadCount + 1;
         };
         uploads.add(id, updatedMeta);
       };
-      case (null) {};
+      case (null) { Runtime.trap("File not found") };
     };
   };
 
   // Get chunk info for a specific file
+  // Allows guests (anonymous users) to access info for shared files
   public query ({ caller }) func getChunkInfo(id : Text) : async ?ChunkInfo {
     switch (uploads.get(id)) {
       case (?meta) {
@@ -245,7 +252,8 @@ actor {
     };
   };
 
-  // Check if a file is shared
+  // Check if a file is shared - public query for share link validation
+  // No authorization needed as this is public information for share links
   public query func isFileShared(id : Text) : async Bool {
     switch (uploads.get(id)) {
       case (?meta) { meta.isShared };
@@ -253,12 +261,13 @@ actor {
     };
   };
 
-  // Get total number of uploaded files
+  // Get total number of uploaded files - public statistic
+  // No authorization needed as this is aggregate public information
   public query func getTotalUploads() : async Nat {
     uploads.size();
   };
 
-  // Get number of files uploaded by a specific user
+  // Get number of files uploaded by a specific user - admin only
   public query ({ caller }) func getUserUploadCount(user : Principal) : async Nat {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can access this info");

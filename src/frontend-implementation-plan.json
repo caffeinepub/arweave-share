@@ -1,104 +1,36 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Rebuild media sharing app with ICP storage and chunking",
+  "title": "Fix file not found error on shared file links - Frontend",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Remove all Arweave-related functionality from frontend",
-      "acceptanceCriteria": [
-        "KeyfilePicker component is deleted",
-        "arweaveClient.ts is deleted",
-        "UploadPage no longer references Arweave or keyfile selection",
-        "No Arweave-related imports remain in the codebase"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/upload/KeyfilePicker.tsx",
-          "operation": "delete",
-          "description": "Remove KeyfilePicker component as Arweave keyfile selection is no longer needed"
-        },
-        {
-          "path": "frontend/src/lib/arweaveClient.ts",
-          "operation": "delete",
-          "description": "Remove Arweave client library as all storage is now handled by ICP backend"
-        },
-        {
-          "path": "frontend/src/pages/UploadPage.tsx",
-          "operation": "modify",
-          "description": "Remove all Arweave-related imports, keyfile state, and Arweave transaction logic. Replace with direct ICP backend upload using the blob-storage component. Verify the blob-storage component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
       "id": "REQ-3",
-      "summary": "Implement chunked file upload to ICP backend with progress indication",
+      "summary": "Ensure share link generation and parsing use correct file ID format",
       "acceptanceCriteria": [
-        "File picker allows selection of images and videos only",
-        "Files larger than 2MB are rejected with user-friendly error",
-        "Upload progress bar shows percentage completion during chunked upload",
-        "Successful upload displays the generated shareable link",
-        "Upload errors are handled gracefully with clear messages"
+        "Share link URL contains the correct file ID parameter",
+        "Frontend shareLinks utility generates URLs that match the backend's expected format",
+        "SharePage correctly extracts the file ID from the URL and passes it to the retrieval query"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/UploadPage.tsx",
+          "path": "frontend/src/lib/shareLinks.ts",
           "operation": "modify",
-          "description": "Implement file selection with image/video MIME type filtering and 2MB size validation. Add chunked upload flow using ExternalBlob.fromBytes().withUploadProgress() to track upload percentage and display progress bar. Handle upload errors with user-friendly messages. On successful upload, call backend uploadFileMetadata and display the generated shareable link. Verify the blob-storage component's usage instructions before implementing."
+          "description": "Review and verify that generateShareLink correctly formats the share URL with the file ID. Ensure it uses the proper path structure (e.g., /share/:id or #/share/:id) that matches the routing configuration in App.tsx. The function should accept a file ID string and return a complete shareable URL."
         },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Add React Query mutation hooks for chunked file upload workflow: uploadFileMetadata mutation, uploadChunk mutation with progress tracking, and finalizeUpload mutation. Add error handling for each mutation stage."
-        }
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "summary": "Display shareable links and enable public access to shared files",
-      "acceptanceCriteria": [
-        "Each uploaded file has a unique shareable URL",
-        "SharePage displays file metadata and download button for valid share links",
-        "Public users can access and download shared files without logging in",
-        "Invalid or non-existent share links show appropriate error message"
-      ],
-      "file_operations": [
         {
           "path": "frontend/src/pages/SharePage.tsx",
           "operation": "modify",
-          "description": "Update to fetch file metadata and chunks from backend for shared files. Display file metadata (name, size, type, upload date). Implement download button that retrieves chunks via getFileChunks, reassembles the file, and triggers browser download. Use ExternalBlob.getDirectURL() for direct streaming when appropriate. Call incrementDownloadCount on download. Show error state for invalid share links. Verify the blob-storage component's usage instructions before implementing."
+          "description": "Review the file ID extraction logic from the URL route parameters. Ensure the component correctly retrieves the file ID from the route params, handles the case where the ID might be undefined, and passes the correct ID format to the backend query methods (getFileMetadata, getFileChunks, incrementDownloadCount). Add error logging to capture the exact file ID being requested versus what the backend expects. Verify the component handles the query response states appropriately (loading, error, success)."
         },
         {
           "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Add query hook for fetching file metadata by ID (no authentication required for shared files). Add mutation hook for incrementDownloadCount. Add helper for fetching and reassembling file chunks."
-        }
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "summary": "Update MyUploadsPage to display media with thumbnails and shareable links",
-      "acceptanceCriteria": [
-        "Media files display as thumbnails when possible",
-        "Each upload shows file size and upload timestamp",
-        "Share link can be copied to clipboard with one click",
-        "User receives visual feedback when link is copied"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/MyUploadsPage.tsx",
-          "operation": "modify",
-          "description": "Ensure authenticated user guard is in place using authorization component. Display loading and error states appropriately. Pass file list to UploadsList component with proper metadata."
+          "description": "Review the getFileMetadata and getFileChunks query implementations to ensure they correctly pass the file ID to the backend actor methods. Verify that the query keys include the file ID for proper cache management. Add error handling that logs both the file ID being requested and any error responses from the backend to aid in debugging the file not found issue."
         },
         {
           "path": "frontend/src/components/uploads/UploadsList.tsx",
           "operation": "modify",
-          "description": "Display file thumbnails using ExternalBlob.getDirectURL() for image/video preview. Show file size (formatted with human-readable bytes) and upload timestamp. Add copy-to-clipboard button for shareable link with visual feedback (toast or temporary checkmark). Include delete functionality for each file. Verify the blob-storage component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Ensure getMyUploads query hook properly fetches authenticated user's uploads with all metadata. Add shareFile mutation hook for toggling file sharing status. Ensure deleteFile mutation properly invalidates uploads cache."
+          "description": "Review the copy share link functionality to ensure it uses the generateShareLink utility correctly and passes the proper file ID format (metadata.id). Verify that the share link being copied matches the format expected by the SharePage routing."
         }
       ]
     }

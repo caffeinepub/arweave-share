@@ -1,47 +1,19 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "A simple media sharing app where users can upload images and videos (max 2MB) stored on the Internet Computer with chunking. Files are private by default and can be shared via unique links. Moving away from Arweave to ICP storage.",
-  "architectural_notes": [
-    "Backend uses Motoko with chunked storage for files up to 2MB",
-    "Files stored on Internet Computer, not Arweave",
-    "Privacy model: private by default, shareable via unique links",
-    "Supported media types: images and videos only"
-  ],
+  "summary": "Media/file sharing application where users upload files and receive shareable links to access them",
+  "architectural_notes": [],
   "known_issues": [
-    "This is the 5th attempt at building this app - previous versions had issues"
+    "Uploaded files return 'File not found' error when accessed via share links",
+    "Upload-to-share flow has disconnect between file storage and public retrieval"
   ],
-  "isFixRequest": false,
+  "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-remove-all-arweave-related-functionality-including-keyfilepicker-component-arweaveclient-ts-library-and-any-arweave-transaction-logic-from-uploadpage",
-      "title": "Remove all Arweave-related functionality including KeyfilePicker component, arweaveClient.ts library, and any Arweave transaction logic from UploadPage",
-      "reqIds": [
-        "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-update-uploadpage-to-directly-upload-files-to-the-icp-backend-with-chunking-support-showing-upload-progress-with-a-progress-bar",
-      "title": "Update UploadPage to directly upload files to the ICP backend with chunking support, showing upload progress with a progress bar",
+      "id": "feature-ensure-the-share-link-generation-uses-the-correct-file-id-format-that-matches-how-files-are-stored-and-retrieved",
+      "title": "Ensure the share link generation uses the correct file ID format that matches how files are stored and retrieved",
       "reqIds": [
         "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-generate-unique-shareable-links-for-each-uploaded-file-that-allow-public-access-without-authentication",
-      "title": "Generate unique shareable links for each uploaded file that allow public access without authentication",
-      "reqIds": [
-        "REQ-5"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-update-myuploadspage-to-display-uploaded-media-with-thumbnails-file-sizes-upload-dates-and-copy-to-clipboard-shareable-link-buttons",
-      "title": "Update MyUploadsPage to display uploaded media with thumbnails, file sizes, upload dates, and copy-to-clipboard shareable link buttons",
-      "reqIds": [
-        "REQ-6"
       ],
       "version": 1
     }
@@ -49,52 +21,31 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Upload images and videos up to 2MB with chunking",
-      "reqIds": [],
+      "summary": "Investigate and fix the issue where uploaded files return 'File not found' error when accessed via their share links",
+      "reqIds": [
+        "REQ-1"
+      ],
       "status": "pending"
     },
     {
       "id": "AR-2",
-      "summary": "Private media library for each user",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-3",
-      "summary": "Generate shareable links for uploaded media",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-4",
-      "summary": "Access shared files via links without login",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-5",
-      "summary": "Remove Arweave keyfile upload feature entirely",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-7",
-      "summary": "Implement chunked file upload in the backend for images and videos up to 2000KB (2MB), storing chunks in stable storage with automatic reassembly on download",
+      "summary": "Verify that the file upload flow correctly stores file metadata and chunks in the backend persistent maps",
       "reqIds": [
         "REQ-2"
       ],
       "status": "pending"
     },
     {
-      "id": "AR-9",
-      "summary": "Ensure uploaded files remain private to the uploader by default, only accessible via the user's uploads list in MyUploadsPage",
+      "id": "AR-4",
+      "summary": "Fix any issues with the public file access permissions that prevent anonymous users from viewing shared files",
       "reqIds": [
         "REQ-4"
       ],
       "status": "pending"
     }
   ],
-  "projectName": "Media Share",
+  "gameProjectType": "none",
+  "projectName": "Fix file not found error on shared file links",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

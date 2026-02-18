@@ -11,15 +11,23 @@ import { useState, useEffect } from 'react';
 
 export default function SharePage() {
   const { id } = useParams({ from: '/share/$id' });
-  const { data: metadata, isLoading, error } = useGetFileMetadata(id);
-  const { data: chunks, isLoading: chunksLoading } = useGetFileChunks(id);
+  const { data: metadata, isLoading, error, isFetched } = useGetFileMetadata(id);
+  const { data: chunks, isLoading: chunksLoading, error: chunksError } = useGetFileChunks(id);
   const incrementDownload = useIncrementDownloadCount();
   const [fileUrl, setFileUrl] = useState<string | null>(null);
+
+  // Debug logging
+  useEffect(() => {
+    console.log('SharePage - File ID:', id);
+    console.log('SharePage - Metadata:', { metadata, isLoading, error, isFetched });
+    console.log('SharePage - Chunks:', { chunks: chunks?.length, chunksLoading, chunksError });
+  }, [id, metadata, isLoading, error, isFetched, chunks, chunksLoading, chunksError]);
 
   // Reassemble file from chunks for preview
   useEffect(() => {
     if (chunks && chunks.length > 0 && metadata) {
       try {
+        console.log('Reassembling file from', chunks.length, 'chunks');
         // Sort chunks by index
         const sortedChunks = [...chunks].sort((a, b) => Number(a.chunkIndex) - Number(b.chunkIndex));
         
@@ -33,10 +41,13 @@ export default function SharePage() {
           offset += chunk.data.length;
         }
 
+        console.log('File reassembled, total size:', totalSize);
+
         // Create blob URL
         const blob = new Blob([combinedData], { type: metadata.contentType });
         const url = URL.createObjectURL(blob);
         setFileUrl(url);
+        console.log('Blob URL created:', url);
 
         return () => {
           URL.revokeObjectURL(url);
@@ -94,6 +105,79 @@ export default function SharePage() {
   const isImage = metadata?.contentType.startsWith('image/');
   const isVideo = metadata?.contentType.startsWith('video/');
 
+  // Show loading state
+  if (isLoading || chunksLoading) {
+    return (
+      <div className="container mx-auto px-4 py-12 max-w-2xl">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold tracking-tight mb-3">Shared File</h1>
+          <p className="text-lg text-muted-foreground">
+            Securely stored on the Internet Computer
+          </p>
+        </div>
+
+        <Card>
+          <CardContent className="py-12 space-y-4">
+            <Skeleton className="h-8 w-3/4 mx-auto" />
+            <Skeleton className="h-4 w-1/2 mx-auto" />
+            <Skeleton className="h-24 w-full" />
+            <Skeleton className="h-12 w-full" />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show error state
+  if ((error || chunksError) && isFetched) {
+    return (
+      <div className="container mx-auto px-4 py-12 max-w-2xl">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold tracking-tight mb-3">Shared File</h1>
+          <p className="text-lg text-muted-foreground">
+            Securely stored on the Internet Computer
+          </p>
+        </div>
+
+        <Card>
+          <CardContent className="py-12">
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                File not found. The share link may be invalid or the file may have been deleted.
+              </AlertDescription>
+            </Alert>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show file not found if no metadata after loading
+  if (!metadata && isFetched) {
+    return (
+      <div className="container mx-auto px-4 py-12 max-w-2xl">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold tracking-tight mb-3">Shared File</h1>
+          <p className="text-lg text-muted-foreground">
+            Securely stored on the Internet Computer
+          </p>
+        </div>
+
+        <Card>
+          <CardContent className="py-12">
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                File not found. The share link may be invalid or the file may have been deleted.
+              </AlertDescription>
+            </Alert>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-12 max-w-2xl">
       <div className="mb-8 text-center">
@@ -104,23 +188,7 @@ export default function SharePage() {
       </div>
 
       <Card>
-        {isLoading ? (
-          <CardContent className="py-12 space-y-4">
-            <Skeleton className="h-8 w-3/4 mx-auto" />
-            <Skeleton className="h-4 w-1/2 mx-auto" />
-            <Skeleton className="h-24 w-full" />
-            <Skeleton className="h-12 w-full" />
-          </CardContent>
-        ) : error ? (
-          <CardContent className="py-12">
-            <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                File not found. The share link may be invalid or the file may have been deleted.
-              </AlertDescription>
-            </Alert>
-          </CardContent>
-        ) : metadata ? (
+        {metadata && (
           <>
             <CardHeader className="text-center pb-4">
               <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
@@ -207,7 +275,7 @@ export default function SharePage() {
               </Alert>
             </CardContent>
           </>
-        ) : null}
+        )}
       </Card>
     </div>
   );
