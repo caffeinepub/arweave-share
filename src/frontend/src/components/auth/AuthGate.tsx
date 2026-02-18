@@ -30,9 +30,10 @@ export default function AuthGate({ children }: AuthGateProps) {
             <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
               <Lock className="h-6 w-6 text-primary" />
             </div>
-            <CardTitle>Authentication Required</CardTitle>
-            <CardDescription>
-              Please sign in with Internet Identity to upload and manage your files.
+            <CardTitle>LookyLoo - Frictionless File Share by GeekDice</CardTitle>
+            <CardDescription className="space-y-2 text-left">
+              <p>Upload your file and share with anyone. They won't need a wallet or a login to access it.</p>
+              <p>As the owner you'll need to sign in with Internet Identity (IID2)</p>
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -48,7 +49,7 @@ export default function AuthGate({ children }: AuthGateProps) {
                   Logging in...
                 </>
               ) : (
-                'Sign In with Internet Identity'
+                'Sign in or create IID2'
               )}
             </Button>
           </CardContent>

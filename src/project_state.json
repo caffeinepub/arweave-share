@@ -1,51 +1,51 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Media/file sharing application where users upload files and receive shareable links to access them",
-  "architectural_notes": [],
-  "known_issues": [
-    "Uploaded files return 'File not found' error when accessed via share links",
-    "Upload-to-share flow has disconnect between file storage and public retrieval"
+  "summary": "LookyLoo - A frictionless media file sharing app where users can upload files and share them with anyone via links without requiring the recipient to have a wallet or login. The owner uses Internet Identity (IID2) for authentication.",
+  "architectural_notes": [
+    "App uses Internet Identity (IID2) for owner authentication",
+    "Recipients do not need wallets or logins to access shared files",
+    "Deployed on Internet Computer with draft and production modes",
+    "Draft mode has temporary data; production mode has permanent data persistence"
   ],
-  "isFixRequest": true,
+  "known_issues": [],
+  "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-ensure-the-share-link-generation-uses-the-correct-file-id-format-that-matches-how-files-are-stored-and-retrieved",
-      "title": "Ensure the share link generation uses the correct file ID format that matches how files are stored and retrieved",
+      "id": "feature-replace-all-occurrences-of-arweave-with-lookyloo-throughout-the-application-including-page-titles-headers-component-text-and-html-metadata",
+      "title": "Replace all occurrences of 'Arweave' with 'LookyLoo' throughout the application, including page titles, headers, component text, and HTML metadata",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-login-page-center-card-title-to-lookyloo-frictionless-file-share-by-geekdice",
+      "title": "Update the login page center card title to 'LookyLoo - Frictionless File Share by GeekDice'",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-login-page-center-card-description-to-upload-your-file-and-share-with-anyone-they-won-t-need-a-wallet-or-a-login-to-access-it-followed-by-as-the-owner-you-ll-need-to-sign-in-with-internet-identity-iid2",
+      "title": "Update the login page center card description to 'Upload your file and share with anyone. They won't need a wallet or a login to access it.' followed by 'As the owner you'll need to sign in with Internet Identity (IID2)'",
       "reqIds": [
         "REQ-3"
       ],
       "version": 1
-    }
-  ],
-  "new_feature_requests": [
-    {
-      "id": "AR-1",
-      "summary": "Investigate and fix the issue where uploaded files return 'File not found' error when accessed via their share links",
-      "reqIds": [
-        "REQ-1"
-      ],
-      "status": "pending"
     },
     {
-      "id": "AR-2",
-      "summary": "Verify that the file upload flow correctly stores file metadata and chunks in the backend persistent maps",
-      "reqIds": [
-        "REQ-2"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-4",
-      "summary": "Fix any issues with the public file access permissions that prevent anonymous users from viewing shared files",
+      "id": "feature-change-the-sign-in-button-text-to-sign-in-or-create-iid2",
+      "title": "Change the sign-in button text to 'Sign in or create IID2'",
       "reqIds": [
         "REQ-4"
       ],
-      "status": "pending"
+      "version": 1
     }
   ],
-  "gameProjectType": "none",
-  "projectName": "Fix file not found error on shared file links",
+  "new_feature_requests": [],
+  "projectName": "LookyLoo",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

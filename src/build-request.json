@@ -1,88 +1,92 @@
 {
   "kind": "build_request",
-  "title": "Fix file not found error on shared file links",
-  "priority": "high",
+  "title": "Rebrand from Arweave to LookyLoo with updated login page messaging",
+  "projectName": "LookyLoo",
+  "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Investigate and fix the issue where uploaded files return 'File not found' error when accessed via their share links",
-      "target": "backend",
+      "text": "Replace all occurrences of 'Arweave' with 'LookyLoo' throughout the application, including page titles, headers, component text, and HTML metadata",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1",
-          "msg-2",
-          "msg-3"
+          "msg-20"
         ],
         "quotes": [
-          "File not found. The share link may be invalid or the file may have been deleted.",
-          "how long does it take before the uploaded file is available over the link?",
-          "uploaded files are showing \"File not found\" when accessed via their share links"
+          "Since it's no longer Arweave, change anything that says \"Arweave\" to my app name which is \"LookyLoo\"."
         ]
       },
       "acceptanceCriteria": [
-        "Uploaded files are immediately accessible via their share links after upload completes",
-        "The SharePage displays the uploaded file correctly without 'File not found' error",
-        "Share link generation correctly references the stored file ID",
-        "Public file retrieval endpoint returns the correct file data for valid share IDs"
+        "No visible 'Arweave' text remains in the UI",
+        "HTML title and meta tags reflect 'LookyLoo'",
+        "All component text uses 'LookyLoo' branding"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Verify that the file upload flow correctly stores file metadata and chunks in the backend persistent maps",
-      "target": "backend",
+      "text": "Update the login page center card title to 'LookyLoo - Frictionless File Share by GeekDice'",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2",
-          "msg-3"
+          "msg-20"
+        ],
+        "quotes": [
+          "LookyLoo - Frictionless File Share by GeekDice"
         ]
       },
       "acceptanceCriteria": [
-        "File metadata is stored in the files map with correct ID",
-        "File chunks are stored in the fileChunks map and associated with the correct file ID",
-        "Upload finalization confirms all chunks are present before marking file as complete"
+        "Login page displays the exact title 'LookyLoo - Frictionless File Share by GeekDice'",
+        "Title maintains visual hierarchy and styling consistency"
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Ensure the share link generation uses the correct file ID format that matches how files are stored and retrieved",
-      "target": "both",
+      "text": "Update the login page center card description to 'Upload your file and share with anyone. They won't need a wallet or a login to access it.' followed by 'As the owner you'll need to sign in with Internet Identity (IID2)'",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2",
-          "msg-3"
+          "msg-20"
+        ],
+        "quotes": [
+          "Upload your file and share with anyone. They won't need a wallet or a login to access it. As the owner you'll need to sign in with Internet Identity (IID2)"
         ]
       },
       "acceptanceCriteria": [
-        "Share link URL contains the correct file ID parameter",
-        "Frontend shareLinks utility generates URLs that match the backend's expected format",
-        "SharePage correctly extracts the file ID from the URL and passes it to the retrieval query"
+        "Description text matches exactly as specified",
+        "Text is properly formatted with appropriate spacing between sentences",
+        "Owner authentication note is clearly visible"
       ]
     },
     {
       "id": "REQ-4",
-      "text": "Fix any issues with the public file access permissions that prevent anonymous users from viewing shared files",
-      "target": "backend",
+      "text": "Change the sign-in button text to 'Sign in or create IID2'",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-20"
+        ],
+        "quotes": [
+          "change the sign in button to read, \"Sign in or create IID2)\""
         ]
       },
       "acceptanceCriteria": [
-        "Shared files with isShared=true are accessible without authentication",
-        "The getFileMetadata and getFileChunk methods correctly handle public access for shared files",
-        "Authorization checks allow anonymous access to shared files while protecting private files"
+        "Sign-in button displays 'Sign in or create IID2'",
+        "Button maintains existing styling and functionality"
       ]
     }
   ],
   "constraints": [
-    "Do not modify the Internet Identity authentication hooks or components",
-    "Preserve the existing chunked upload mechanism and file size limits",
-    "Maintain the single-actor backend architecture"
+    "Do not modify current color scheme",
+    "Do not modify current font choices",
+    "Do not change backend functionality",
+    "Do not alter file upload/sharing logic"
   ],
   "nonGoals": [
-    "Adding new file sharing features beyond fixing the current broken flow",
-    "Changing the UI design or layout of the SharePage",
-    "Modifying file upload size limits or chunk sizes"
+    "Changing color palette",
+    "Modifying typography",
+    "Altering backend code",
+    "Changing upload functionality",
+    "Modifying share link generation logic"
   ],
   "imageRequirements": {
     "required": [],

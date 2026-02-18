@@ -1,12 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Fix the "File not found" error that occurs when accessing uploaded files via their share links.
+**Goal:** Rebrand the application from Arweave to LookyLoo and update login page messaging to reflect the new branding and purpose.
 
 **Planned changes:**
-- Investigate and fix the backend file storage and retrieval flow to ensure uploaded files are immediately accessible via share links
-- Verify that file metadata and chunks are correctly stored in the persistent maps during upload
-- Ensure share link generation uses the correct file ID format that matches the backend storage
-- Fix public file access permissions to allow anonymous users to view shared files without authentication errors
+- Replace all instances of "Arweave" with "LookyLoo" throughout the application (page titles, headers, component text, HTML metadata)
+- Update login page center card title to "LookyLoo - Frictionless File Share by GeekDice"
+- Update login page center card description to explain the frictionless sharing model and owner authentication requirement
+- Change sign-in button text to "Sign in or create IID2"
 
-**User-visible outcome:** Users can successfully access and view uploaded files via share links immediately after upload, without encountering "File not found" errors.
+**User-visible outcome:** Users will see the LookyLoo brand throughout the application with clear messaging on the login page explaining that recipients don't need accounts to access shared files, while owners authenticate via Internet Identity.

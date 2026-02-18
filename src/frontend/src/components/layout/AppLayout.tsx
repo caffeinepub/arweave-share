@@ -19,7 +19,7 @@ export default function AppLayout() {
                 onClick={() => navigate({ to: '/' })}
                 className="text-2xl font-bold tracking-tight hover:opacity-80 transition-opacity"
               >
-                Arweave Share
+                LookyLoo
               </button>
               
               <nav className="hidden md:flex items-center gap-2">
@@ -56,7 +56,7 @@ export default function AppLayout() {
       <footer className="border-t border-border bg-card/30 backdrop-blur-sm mt-auto">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <p>© {new Date().getFullYear()} Arweave Share. Permanent file storage on the permaweb.</p>
+            <p>© {new Date().getFullYear()} LookyLoo. Frictionless file sharing.</p>
             <p className="flex items-center gap-1.5">
               Built with <Heart className="h-3.5 w-3.5 fill-current text-red-500" /> using{' '}
               <a

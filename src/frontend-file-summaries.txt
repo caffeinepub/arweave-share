@@ -1,8 +1,8 @@
 {
   "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining routes for upload, my-uploads, and public share pages with authentication gates and theme provider.",
-  "frontend/src/components/layout/AppLayout.tsx": "Shared layout wrapper with header navigation, login button, profile setup modal, and footer with attribution, used across all pages.",
-  "frontend/src/components/auth/LoginButton.tsx": "Login/logout button component using Internet Identity hook with loading states and query cache clearing on logout.",
-  "frontend/src/components/auth/AuthGate.tsx": "Route guard component that blocks unauthenticated users from protected routes and shows a sign-in prompt.",
+  "frontend/src/components/layout/AppLayout.tsx": "Shared layout wrapper with header navigation showing \"LookyLoo\" branding, login button, profile setup modal, and footer with updated attribution text",
+  "frontend/src/components/auth/LoginButton.tsx": "Login/logout button component with updated text \"Sign in or create IID2\" for the login state, using Internet Identity hook with loading states and query cache clearing on logout",
+  "frontend/src/components/auth/AuthGate.tsx": "Route guard component that blocks unauthenticated users with updated login card showing \"LookyLoo - Frictionless File Share by GeekDice\" title and new description about file sharing and IID2 authentication",
   "frontend/src/components/auth/ProfileSetupModal.tsx": "Modal dialog that prompts new users to set their display name on first login, with proper loading state handling and showCloseButton set to false to prevent dismissal.",
   "frontend/src/components/upload/KeyfilePicker.tsx": "File input component for selecting and validating Arweave JWK keyfiles with visual feedback and security messaging.",
   "frontend/src/components/uploads/UploadsList.tsx": "Reusable list component displaying file metadata cards with thumbnails icons, file info, copy link, view, and delete actions plus empty state.",
@@ -17,5 +17,6 @@
   "frontend/tailwind.config.js": "Tailwind configuration with custom color tokens, Inter font family, and extended design system.",
   "frontend/package.json": "Package configuration with arweave dependency added for client-side file uploads.",
   "frontend/src/main.tsx": "Application entry point that sets up React Query and Internet Identity providers, with CSS import path corrected to ./index.css.",
-  "frontend/src/index.css": "Global styles with OKLCH color system using a purple/violet primary palette for light and dark modes, moved to src directory."
+  "frontend/src/index.css": "Global styles with OKLCH color system using a purple/violet primary palette for light and dark modes, moved to src directory.",
+  "frontend/index.html": "HTML entry point with updated title to \"LookyLoo\""
 }

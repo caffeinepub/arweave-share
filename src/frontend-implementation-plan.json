@@ -1,36 +1,92 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix file not found error on shared file links - Frontend",
+  "title": "Rebrand from Arweave to LookyLoo with updated login page messaging",
   "requirements": [
     {
-      "id": "REQ-3",
-      "summary": "Ensure share link generation and parsing use correct file ID format",
+      "id": "REQ-1",
+      "summary": "Replace all occurrences of 'Arweave' with 'LookyLoo' throughout the application",
       "acceptanceCriteria": [
-        "Share link URL contains the correct file ID parameter",
-        "Frontend shareLinks utility generates URLs that match the backend's expected format",
-        "SharePage correctly extracts the file ID from the URL and passes it to the retrieval query"
+        "No visible 'Arweave' text remains in the UI",
+        "HTML title and meta tags reflect 'LookyLoo'",
+        "All component text uses 'LookyLoo' branding"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/lib/shareLinks.ts",
+          "path": "frontend/index.html",
           "operation": "modify",
-          "description": "Review and verify that generateShareLink correctly formats the share URL with the file ID. Ensure it uses the proper path structure (e.g., /share/:id or #/share/:id) that matches the routing configuration in App.tsx. The function should accept a file ID string and return a complete shareable URL."
+          "description": "Update HTML title from 'Arweave Share' to 'LookyLoo' and ensure meta tags reflect the new branding"
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Replace any 'Arweave' references in the layout component with 'LookyLoo', including header text, navigation labels, and footer attribution if present"
+        },
+        {
+          "path": "frontend/src/components/auth/AuthGate.tsx",
+          "operation": "modify",
+          "description": "Update any 'Arweave' text in authentication prompts or messaging to use 'LookyLoo' branding"
+        },
+        {
+          "path": "frontend/src/pages/UploadPage.tsx",
+          "operation": "modify",
+          "description": "Replace any 'Arweave' references with 'LookyLoo' in page titles, headings, descriptions, or helper text"
+        },
+        {
+          "path": "frontend/src/pages/MyUploadsPage.tsx",
+          "operation": "modify",
+          "description": "Replace any 'Arweave' references with 'LookyLoo' in page titles, headings, or descriptive text"
         },
         {
           "path": "frontend/src/pages/SharePage.tsx",
           "operation": "modify",
-          "description": "Review the file ID extraction logic from the URL route parameters. Ensure the component correctly retrieves the file ID from the route params, handles the case where the ID might be undefined, and passes the correct ID format to the backend query methods (getFileMetadata, getFileChunks, incrementDownloadCount). Add error logging to capture the exact file ID being requested versus what the backend expects. Verify the component handles the query response states appropriately (loading, error, success)."
-        },
+          "description": "Replace any 'Arweave' references with 'LookyLoo' in page titles, headings, or file sharing messaging"
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Update the login page center card title to 'LookyLoo - Frictionless File Share by GeekDice'",
+      "acceptanceCriteria": [
+        "Login page displays the exact title 'LookyLoo - Frictionless File Share by GeekDice'",
+        "Title maintains visual hierarchy and styling consistency"
+      ],
+      "file_operations": [
         {
-          "path": "frontend/src/hooks/useQueries.ts",
+          "path": "frontend/src/components/auth/AuthGate.tsx",
           "operation": "modify",
-          "description": "Review the getFileMetadata and getFileChunks query implementations to ensure they correctly pass the file ID to the backend actor methods. Verify that the query keys include the file ID for proper cache management. Add error handling that logs both the file ID being requested and any error responses from the backend to aid in debugging the file not found issue."
-        },
+          "description": "Update the center card title in the authentication prompt to display 'LookyLoo - Frictionless File Share by GeekDice', maintaining existing styling and visual hierarchy"
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Update the login page center card description with new messaging about file sharing and authentication",
+      "acceptanceCriteria": [
+        "Description text matches exactly as specified",
+        "Text is properly formatted with appropriate spacing between sentences",
+        "Owner authentication note is clearly visible"
+      ],
+      "file_operations": [
         {
-          "path": "frontend/src/components/uploads/UploadsList.tsx",
+          "path": "frontend/src/components/auth/AuthGate.tsx",
           "operation": "modify",
-          "description": "Review the copy share link functionality to ensure it uses the generateShareLink utility correctly and passes the proper file ID format (metadata.id). Verify that the share link being copied matches the format expected by the SharePage routing."
+          "description": "Update the center card description to read 'Upload your file and share with anyone. They won't need a wallet or a login to access it.' followed by 'As the owner you'll need to sign in with Internet Identity (IID2)' with proper formatting and spacing"
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Change the sign-in button text to 'Sign in or create IID2'",
+      "acceptanceCriteria": [
+        "Sign-in button displays 'Sign in or create IID2'",
+        "Button maintains existing styling and functionality"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "modify",
+          "description": "Update the login button text from 'Login' to 'Sign in or create IID2' while preserving all existing functionality, styling, and loading states"
         }
       ]
     }

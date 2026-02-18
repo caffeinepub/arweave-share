@@ -1,61 +1,77 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-18T22:48:22.851Z",
+  "generatedAt": "2026-02-18T23:36:59.056Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
     "total": 4,
-    "implemented": 1,
+    "implemented": 4,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Investigate and fix the issue where uploaded files return 'File not found' error when accessed via their share links",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
+        "summary": "Replace all occurrences of 'Arweave' with 'LookyLoo' throughout the application, including page titles, headers, component text, and HTML metadata",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/index.html",
+          "frontend/src/components/layout/AppLayout.tsx",
+          "frontend/src/components/auth/AuthGate.tsx",
+          "frontend/src/pages/UploadPage.tsx",
+          "frontend/src/pages/MyUploadsPage.tsx",
+          "frontend/src/pages/SharePage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/index.html",
+          "frontend/src/components/layout/AppLayout.tsx",
+          "frontend/src/components/auth/AuthGate.tsx"
+        ]
       },
       {
         "id": "REQ-2",
-        "summary": "Verify that the file upload flow correctly stores file metadata and chunks in the backend persistent maps",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
+        "summary": "Update the login page center card title to 'LookyLoo - Frictionless File Share by GeekDice'",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/auth/AuthGate.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/auth/AuthGate.tsx"
+        ]
       },
       {
         "id": "REQ-3",
-        "summary": "Ensure the share link generation uses the correct file ID format that matches how files are stored and retrieved",
+        "summary": "Update the login page center card description to 'Upload your file and share with anyone. They won't need a wallet or a login to access it.' followed by 'As the owner you'll need to sign in with Internet Identity (IID2)'",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/lib/shareLinks.ts",
-          "frontend/src/pages/SharePage.tsx",
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/components/uploads/UploadsList.tsx"
+          "frontend/src/components/auth/AuthGate.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/SharePage.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/components/auth/AuthGate.tsx"
         ]
       },
       {
         "id": "REQ-4",
-        "summary": "Fix any issues with the public file access permissions that prevent anonymous users from viewing shared files",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
+        "summary": "Change the sign-in button text to 'Sign in or create IID2'",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/auth/LoginButton.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/auth/LoginButton.tsx"
+        ]
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/pages/SharePage.tsx",
+    "frontend/index.html",
+    "frontend/src/components/auth/AuthGate.tsx",
+    "frontend/src/components/auth/LoginButton.tsx",
+    "frontend/src/components/layout/AppLayout.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

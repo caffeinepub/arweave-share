@@ -48,7 +48,7 @@ export default function LoginButton() {
       ) : (
         <>
           <LogIn className="h-4 w-4" />
-          Login
+          Sign in or create IID2
         </>
       )}
     </Button>
