@@ -1,0 +1,21 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining routes for upload, my-uploads, and public share pages with authentication gates and theme provider.",
+  "frontend/src/components/layout/AppLayout.tsx": "Shared layout wrapper with header navigation, login button, profile setup modal, and footer with attribution, used across all pages.",
+  "frontend/src/components/auth/LoginButton.tsx": "Login/logout button component using Internet Identity hook with loading states and query cache clearing on logout.",
+  "frontend/src/components/auth/AuthGate.tsx": "Route guard component that blocks unauthenticated users from protected routes and shows a sign-in prompt.",
+  "frontend/src/components/auth/ProfileSetupModal.tsx": "Modal dialog that prompts new users to set their display name on first login, with proper loading state handling and showCloseButton set to false to prevent dismissal.",
+  "frontend/src/components/upload/KeyfilePicker.tsx": "File input component for selecting and validating Arweave JWK keyfiles with visual feedback and security messaging.",
+  "frontend/src/components/uploads/UploadsList.tsx": "Reusable list component displaying file metadata cards with thumbnails icons, file info, copy link, view, and delete actions plus empty state.",
+  "frontend/src/pages/UploadPage.tsx": "Upload page with file selection (images/videos only, max 2MB), chunked upload to ICP backend with progress tracking, and shareable link generation after successful upload.",
+  "frontend/src/pages/MyUploadsPage.tsx": "Authenticated page displaying user's uploaded media files with management actions including view, copy share link, and delete functionality.",
+  "frontend/src/pages/SharePage.tsx": "Public share page that fetches file chunks from backend, reassembles them for preview and download, displays file metadata, and increments download counter.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including profile management, chunked file upload workflow, file listing, metadata retrieval, chunk fetching, sharing, deletion, and download counting.",
+  "frontend/src/lib/arweaveClient.ts": "Arweave client implementation using direct HTTP API calls and Web Crypto API for signing with proper BufferSource type casting, avoiding the need for the arweave npm package dependency.",
+  "frontend/src/lib/shareLinks.ts": "Helper function to generate IC-routed share links from share IDs.",
+  "frontend/src/lib/utils.ts": "Utility functions including className merging and byte formatting helpers.",
+  "frontend/index.css": "Global styles with OKLCH color system using a purple/violet primary palette for light and dark modes.",
+  "frontend/tailwind.config.js": "Tailwind configuration with custom color tokens, Inter font family, and extended design system.",
+  "frontend/package.json": "Package configuration with arweave dependency added for client-side file uploads.",
+  "frontend/src/main.tsx": "Application entry point that sets up React Query and Internet Identity providers, with CSS import path corrected to ./index.css.",
+  "frontend/src/index.css": "Global styles with OKLCH color system using a purple/violet primary palette for light and dark modes, moved to src directory."
+}

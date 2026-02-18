@@ -1,2 +1,3 @@
-# arweave-share
-Exported from Caffeine project: Arweave Share
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

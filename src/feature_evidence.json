@@ -1,0 +1,91 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-remove-all-arweave-related-functionality-including-keyfilepicker-component-arweaveclient-ts-library-and-any-arweave-transaction-logic-from-uploadpage",
+      "featureTitle": "Remove all Arweave-related functionality including KeyfilePicker component, arweaveClient.ts library, and any Arweave transaction logic from UploadPage",
+      "files": [
+        "frontend/src/components/upload/KeyfilePicker.tsx",
+        "frontend/src/lib/arweaveClient.ts",
+        "frontend/src/pages/UploadPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-uploadpage-to-directly-upload-files-to-the-icp-backend-with-chunking-support-showing-upload-progress-with-a-progress-bar",
+      "featureTitle": "Update UploadPage to directly upload files to the ICP backend with chunking support, showing upload progress with a progress bar",
+      "files": [
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/UploadPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-generate-unique-shareable-links-for-each-uploaded-file-that-allow-public-access-without-authentication",
+      "featureTitle": "Generate unique shareable links for each uploaded file that allow public access without authentication",
+      "files": [
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/SharePage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-myuploadspage-to-display-uploaded-media-with-thumbnails-file-sizes-upload-dates-and-copy-to-clipboard-shareable-link-buttons",
+      "featureTitle": "Update MyUploadsPage to display uploaded media with thumbnails, file sizes, upload dates, and copy-to-clipboard shareable link buttons",
+      "files": [
+        "frontend/src/components/uploads/UploadsList.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/MyUploadsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "kind": "build_request",
+  "title": "Rebuild media sharing app with ICP storage and chunking",
+  "projectName": "Media Share",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Remove all Arweave-related functionality including KeyfilePicker component, arweaveClient.ts library, and any Arweave transaction logic from UploadPage",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-final"
+        ],
+        "quotes": [
+          "remove it entirely"
+        ]
+      },
+      "acceptanceCriteria": [
+        "KeyfilePicker component is deleted",
+        "arweaveClient.ts is deleted",
+        "UploadPage no longer references Arweave or keyfile selection",
+        "No Arweave-related imports remain in the codebase"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement chunked file upload in the backend for images and videos up to 2000KB (2MB), storing chunks in stable storage with automatic reassembly on download",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-final"
+        ],
+        "quotes": [
+          "I'm good with ICP but you'll have to chunk them",
+          "just images and small vids nothing bigger than 2000KB"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend accepts file uploads up to 2MB in chunks",
+        "Chunks are stored in stable storage",
+        "Files are automatically reassembled when downloaded",
+        "Upload rejects files larger than 2MB with clear error message"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Update UploadPage to directly upload files to the ICP backend with chunking support, showing upload progress with a progress bar",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-final"
+        ],
+        "quotes": [
+          "The frontend will have a clean upload interface with progress indication"
+        ]
+      },
+      "acceptanceCriteria": [
+        "File picker allows selection of images and videos only",
+        "Files larger than 2MB are rejected with user-friendly error",
+        "Upload progress bar shows percentage completion during chunked upload",
+        "Successful upload displays the generated shareable link",
+        "Upload errors are handled gracefully with clear messages"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Ensure uploaded files remain private to the uploader by default, only accessible via the user's uploads list in MyUploadsPage",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-final"
+        ],
+        "quotes": [
+          "private to the uploader until they share it via a 'share' link"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Only the file owner can see their uploads in MyUploadsPage",
+        "Unauthenticated users cannot list or access private files",
+        "Other authenticated users cannot access files they don't own"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Generate unique shareable links for each uploaded file that allow public access without authentication",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-final"
+        ],
+        "quotes": [
+          "Generate shareable links for specific files",
+          "Access shared files via those links without needing to log in"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each uploaded file has a unique shareable URL",
+        "SharePage displays file metadata and download button for valid share links",
+        "Public users can access and download shared files without logging in",
+        "Invalid or non-existent share links show appropriate error message"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Update MyUploadsPage to display uploaded media with thumbnails, file sizes, upload dates, and copy-to-clipboard shareable link buttons",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-final"
+        ],
+        "quotes": [
+          "View their private media library"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Media files display as thumbnails when possible",
+        "Each upload shows file size and upload timestamp",
+        "Share link can be copied to clipboard with one click",
+        "User receives visual feedback when link is copied"
+      ]
+    }
+  ],
+  "constraints": [
+    "Maximum file size is 2000KB (2MB)",
+    "Only images and videos are allowed for upload",
+    "Backend must use Motoko single-actor architecture",
+    "Frontend must use React, Tailwind CSS, and React Query"
+  ],
+  "nonGoals": [
+    "Social features like comments or likes",
+    "File editing or transformation",
+    "Multi-file batch uploads",
+    "User-to-user direct sharing or permissions management",
+    "Video transcoding or thumbnail generation",
+    "Arweave integration or any blockchain storage except ICP"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
