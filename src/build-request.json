@@ -1,92 +1,38 @@
 {
   "kind": "build_request",
-  "title": "Rebrand from Arweave to LookyLoo with updated login page messaging",
-  "projectName": "LookyLoo",
+  "title": "Replace hero section logo with animated video",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Replace all occurrences of 'Arweave' with 'LookyLoo' throughout the application, including page titles, headers, component text, and HTML metadata",
+      "text": "Replace the static LookyLoo-logo.png file in the hero section with the uploaded LookyLoo-gif.mp4 animated video file (animated orange camera icon). Maintain the same positioning and styling currently applied to the logo image, but render it as a video element instead of an img element.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-20"
+          "msg-recent"
         ],
         "quotes": [
-          "Since it's no longer Arweave, change anything that says \"Arweave\" to my app name which is \"LookyLoo\"."
+          "the existing file is actually LookyLoo-logo.png. I want to replace with this file I've uploaded",
+          "I'll replace the existing LookyLoo-logo.png in the hero section with this new video file"
         ]
       },
       "acceptanceCriteria": [
-        "No visible 'Arweave' text remains in the UI",
-        "HTML title and meta tags reflect 'LookyLoo'",
-        "All component text uses 'LookyLoo' branding"
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "text": "Update the login page center card title to 'LookyLoo - Frictionless File Share by GeekDice'",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-20"
-        ],
-        "quotes": [
-          "LookyLoo - Frictionless File Share by GeekDice"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Login page displays the exact title 'LookyLoo - Frictionless File Share by GeekDice'",
-        "Title maintains visual hierarchy and styling consistency"
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Update the login page center card description to 'Upload your file and share with anyone. They won't need a wallet or a login to access it.' followed by 'As the owner you'll need to sign in with Internet Identity (IID2)'",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-20"
-        ],
-        "quotes": [
-          "Upload your file and share with anyone. They won't need a wallet or a login to access it. As the owner you'll need to sign in with Internet Identity (IID2)"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Description text matches exactly as specified",
-        "Text is properly formatted with appropriate spacing between sentences",
-        "Owner authentication note is clearly visible"
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Change the sign-in button text to 'Sign in or create IID2'",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-20"
-        ],
-        "quotes": [
-          "change the sign in button to read, \"Sign in or create IID2)\""
-        ]
-      },
-      "acceptanceCriteria": [
-        "Sign-in button displays 'Sign in or create IID2'",
-        "Button maintains existing styling and functionality"
+        "The hero section displays LookyLoo-gif.mp4 as an auto-playing looped video",
+        "The video maintains the same center positioning as the previous logo",
+        "The video styling matches the dimensions and appearance of the original logo placement",
+        "The static LookyLoo-logo.png is no longer used in the hero section"
       ]
     }
   ],
   "constraints": [
-    "Do not modify current color scheme",
-    "Do not modify current font choices",
-    "Do not change backend functionality",
-    "Do not alter file upload/sharing logic"
+    "Use the exact uploaded file LookyLoo-gif.mp4 without modifications",
+    "Preserve all other hero section content and styling",
+    "Ensure video plays automatically and loops continuously"
   ],
   "nonGoals": [
-    "Changing color palette",
-    "Modifying typography",
-    "Altering backend code",
-    "Changing upload functionality",
-    "Modifying share link generation logic"
+    "Changing any other hero section elements besides the logo replacement",
+    "Modifying the header logo (AppLayout.tsx)",
+    "Adjusting hero section text or layout"
   ],
   "imageRequirements": {
     "required": [],

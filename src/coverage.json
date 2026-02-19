@@ -1,64 +1,24 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-18T23:36:59.056Z",
+  "generatedAt": "2026-02-19T05:09:27.127Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 4,
-    "implemented": 4,
+    "total": 1,
+    "implemented": 1,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Replace all occurrences of 'Arweave' with 'LookyLoo' throughout the application, including page titles, headers, component text, and HTML metadata",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/index.html",
-          "frontend/src/components/layout/AppLayout.tsx",
-          "frontend/src/components/auth/AuthGate.tsx",
-          "frontend/src/pages/UploadPage.tsx",
-          "frontend/src/pages/MyUploadsPage.tsx",
-          "frontend/src/pages/SharePage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/index.html",
-          "frontend/src/components/layout/AppLayout.tsx",
-          "frontend/src/components/auth/AuthGate.tsx"
-        ]
-      },
-      {
-        "id": "REQ-2",
-        "summary": "Update the login page center card title to 'LookyLoo - Frictionless File Share by GeekDice'",
+        "summary": "Replace the static LookyLoo-logo.png file in the hero section with the uploaded LookyLoo-gif.mp4 animated video file (animated orange camera icon). Maintain the same positioning and styling currently applied to the logo image, but render it as a video element instead of an img element.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/components/auth/AuthGate.tsx"
         ],
         "matchedFiles": [
           "frontend/src/components/auth/AuthGate.tsx"
-        ]
-      },
-      {
-        "id": "REQ-3",
-        "summary": "Update the login page center card description to 'Upload your file and share with anyone. They won't need a wallet or a login to access it.' followed by 'As the owner you'll need to sign in with Internet Identity (IID2)'",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/auth/AuthGate.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/auth/AuthGate.tsx"
-        ]
-      },
-      {
-        "id": "REQ-4",
-        "summary": "Change the sign-in button text to 'Sign in or create IID2'",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/auth/LoginButton.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/auth/LoginButton.tsx"
         ]
       }
     ]
@@ -68,10 +28,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/index.html",
     "frontend/src/components/auth/AuthGate.tsx",
-    "frontend/src/components/auth/LoginButton.tsx",
-    "frontend/src/components/layout/AppLayout.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

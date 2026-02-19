@@ -130,11 +130,15 @@ export default function UploadPage() {
   const canUpload = file && !uploading;
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-2xl">
-      <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold tracking-tight mb-3">Upload Media</h1>
-        <p className="text-lg text-muted-foreground">
+    <div className="container mx-auto px-4 py-9 max-w-xl">
+      <div className="mb-6 text-center">
+        <h1 className="text-3xl font-bold tracking-tight mb-2">Upload Media</h1>
+        <p className="text-base text-muted-foreground mb-3">
           Share your images and videos securely on the Internet Computer
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Share a file with anyone through a link. Those you share with won't need a login.
+          To Upload, you must sign in with Internet Identity (IID2)
         </p>
       </div>
 

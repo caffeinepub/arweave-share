@@ -1,92 +1,22 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Rebrand from Arweave to LookyLoo with updated login page messaging",
+  "title": "Replace hero section logo with animated video",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Replace all occurrences of 'Arweave' with 'LookyLoo' throughout the application",
+      "summary": "Replace static LookyLoo-logo.png in hero section with LookyLoo-gif.mp4 animated video while maintaining positioning and styling",
       "acceptanceCriteria": [
-        "No visible 'Arweave' text remains in the UI",
-        "HTML title and meta tags reflect 'LookyLoo'",
-        "All component text uses 'LookyLoo' branding"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/index.html",
-          "operation": "modify",
-          "description": "Update HTML title from 'Arweave Share' to 'LookyLoo' and ensure meta tags reflect the new branding"
-        },
-        {
-          "path": "frontend/src/components/layout/AppLayout.tsx",
-          "operation": "modify",
-          "description": "Replace any 'Arweave' references in the layout component with 'LookyLoo', including header text, navigation labels, and footer attribution if present"
-        },
-        {
-          "path": "frontend/src/components/auth/AuthGate.tsx",
-          "operation": "modify",
-          "description": "Update any 'Arweave' text in authentication prompts or messaging to use 'LookyLoo' branding"
-        },
-        {
-          "path": "frontend/src/pages/UploadPage.tsx",
-          "operation": "modify",
-          "description": "Replace any 'Arweave' references with 'LookyLoo' in page titles, headings, descriptions, or helper text"
-        },
-        {
-          "path": "frontend/src/pages/MyUploadsPage.tsx",
-          "operation": "modify",
-          "description": "Replace any 'Arweave' references with 'LookyLoo' in page titles, headings, or descriptive text"
-        },
-        {
-          "path": "frontend/src/pages/SharePage.tsx",
-          "operation": "modify",
-          "description": "Replace any 'Arweave' references with 'LookyLoo' in page titles, headings, or file sharing messaging"
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Update the login page center card title to 'LookyLoo - Frictionless File Share by GeekDice'",
-      "acceptanceCriteria": [
-        "Login page displays the exact title 'LookyLoo - Frictionless File Share by GeekDice'",
-        "Title maintains visual hierarchy and styling consistency"
+        "The hero section displays LookyLoo-gif.mp4 as an auto-playing looped video",
+        "The video maintains the same center positioning as the previous logo",
+        "The video styling matches the dimensions and appearance of the original logo placement",
+        "The static LookyLoo-logo.png is no longer used in the hero section"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/auth/AuthGate.tsx",
           "operation": "modify",
-          "description": "Update the center card title in the authentication prompt to display 'LookyLoo - Frictionless File Share by GeekDice', maintaining existing styling and visual hierarchy"
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Update the login page center card description with new messaging about file sharing and authentication",
-      "acceptanceCriteria": [
-        "Description text matches exactly as specified",
-        "Text is properly formatted with appropriate spacing between sentences",
-        "Owner authentication note is clearly visible"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/auth/AuthGate.tsx",
-          "operation": "modify",
-          "description": "Update the center card description to read 'Upload your file and share with anyone. They won't need a wallet or a login to access it.' followed by 'As the owner you'll need to sign in with Internet Identity (IID2)' with proper formatting and spacing"
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Change the sign-in button text to 'Sign in or create IID2'",
-      "acceptanceCriteria": [
-        "Sign-in button displays 'Sign in or create IID2'",
-        "Button maintains existing styling and functionality"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/auth/LoginButton.tsx",
-          "operation": "modify",
-          "description": "Update the login button text from 'Login' to 'Sign in or create IID2' while preserving all existing functionality, styling, and loading states"
+          "description": "Replace the static image element displaying LookyLoo-logo.png with a video element that displays the uploaded LookyLoo-gif.mp4 file. Configure the video element with autoplay, loop, muted, and playsInline attributes to ensure continuous playback. Maintain the exact same positioning (centered via flexbox) and styling (max width constraints) currently applied to the logo image. Update the src path to reference the video file in the public assets directory."
         }
       ]
     }

@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import { useInternetIdentity } from '../../hooks/useInternetIdentity';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Lock, Loader2 } from 'lucide-react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Loader2 } from 'lucide-react';
 
 interface AuthGateProps {
   children: ReactNode;
@@ -25,22 +25,35 @@ export default function AuthGate({ children }: AuthGateProps) {
   if (!identity) {
     return (
       <div className="container mx-auto px-4 py-16 flex items-center justify-center min-h-[60vh]">
-        <Card className="max-w-md w-full">
-          <CardHeader className="text-center">
-            <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <Lock className="h-6 w-6 text-primary" />
+        <Card className="w-full max-w-2xl">
+          <CardHeader className="text-center space-y-8 pb-8">
+            <div className="mx-auto mb-2 h-36 w-36 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
+              <video 
+                src="/assets/LookyLoo-gif.mp4" 
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-24 w-24 object-contain scale-150"
+              />
             </div>
-            <CardTitle>LookyLoo - Frictionless File Share by GeekDice</CardTitle>
-            <CardDescription className="space-y-2 text-left">
-              <p>Upload your file and share with anyone. They won't need a wallet or a login to access it.</p>
-              <p>As the owner you'll need to sign in with Internet Identity (IID2)</p>
-            </CardDescription>
+            
+            <h1 className="text-5xl font-bold tracking-tight">LookyLoo</h1>
+            
+            <h2 className="text-2xl font-extrabold tracking-tight">
+              Frictionless File Share - by GeekDice
+            </h2>
+            
+            <div className="space-y-2 pt-8">
+              <p className="text-base">Share a file with anyone through a link. Those you share with won't need a login.</p>
+              <p className="text-base">To Upload, you must sign in with Internet Identity (IID2)</p>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex justify-center pt-8">
             <Button
               onClick={login}
               disabled={isLoggingIn}
-              className="w-full gap-2"
+              className="w-full max-w-sm gap-2"
               size="lg"
             >
               {isLoggingIn ? (

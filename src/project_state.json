@@ -1,51 +1,22 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "LookyLoo - A frictionless media file sharing app where users can upload files and share them with anyone via links without requiring the recipient to have a wallet or login. The owner uses Internet Identity (IID2) for authentication.",
-  "architectural_notes": [
-    "App uses Internet Identity (IID2) for owner authentication",
-    "Recipients do not need wallets or logins to access shared files",
-    "Deployed on Internet Computer with draft and production modes",
-    "Draft mode has temporary data; production mode has permanent data persistence"
-  ],
+  "summary": "New project",
+  "architectural_notes": [],
   "known_issues": [],
   "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-replace-all-occurrences-of-arweave-with-lookyloo-throughout-the-application-including-page-titles-headers-component-text-and-html-metadata",
-      "title": "Replace all occurrences of 'Arweave' with 'LookyLoo' throughout the application, including page titles, headers, component text, and HTML metadata",
+      "id": "feature-replace-the-static-lookyloo-logo-png-file-in-the-hero-section-with-the-uploaded-lookyloo-gif-mp4-animated-video-file-animated-orange-camera-icon-maintain-the-same-positioning-and-styling-currently-applied-to-the-logo-image-but-render-it-as-a-video-element-instead-of-an-img-element",
+      "title": "Replace the static LookyLoo-logo.png file in the hero section with the uploaded LookyLoo-gif.mp4 animated video file (animated orange camera icon). Maintain the same positioning and styling currently applied to the logo image, but render it as a video element instead of an img element.",
       "reqIds": [
         "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-update-the-login-page-center-card-title-to-lookyloo-frictionless-file-share-by-geekdice",
-      "title": "Update the login page center card title to 'LookyLoo - Frictionless File Share by GeekDice'",
-      "reqIds": [
-        "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-update-the-login-page-center-card-description-to-upload-your-file-and-share-with-anyone-they-won-t-need-a-wallet-or-a-login-to-access-it-followed-by-as-the-owner-you-ll-need-to-sign-in-with-internet-identity-iid2",
-      "title": "Update the login page center card description to 'Upload your file and share with anyone. They won't need a wallet or a login to access it.' followed by 'As the owner you'll need to sign in with Internet Identity (IID2)'",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-change-the-sign-in-button-text-to-sign-in-or-create-iid2",
-      "title": "Change the sign-in button text to 'Sign in or create IID2'",
-      "reqIds": [
-        "REQ-4"
       ],
       "version": 1
     }
   ],
   "new_feature_requests": [],
-  "projectName": "LookyLoo",
+  "projectName": "Replace hero section logo with animated video",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }
