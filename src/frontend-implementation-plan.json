@@ -1,22 +1,101 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Replace hero section logo with animated video",
+  "title": "Fix file upload failure caused by favicon implementation",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Replace static LookyLoo-logo.png in hero section with LookyLoo-gif.mp4 animated video while maintaining positioning and styling",
+      "summary": "Diagnose and fix the root cause of 'Actor not available' error that occurs after favicon implementation, ensuring the backend actor initializes correctly for authenticated file uploads",
       "acceptanceCriteria": [
-        "The hero section displays LookyLoo-gif.mp4 as an auto-playing looped video",
-        "The video maintains the same center positioning as the previous logo",
-        "The video styling matches the dimensions and appearance of the original logo placement",
-        "The static LookyLoo-logo.png is no longer used in the hero section"
+        "Backend actor initializes successfully for authenticated users",
+        "No 'Actor not available' errors appear in the upload flow",
+        "File upload functionality works after favicon is present in frontend/index.html"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/auth/AuthGate.tsx",
+          "path": "frontend/src/hooks/useActor.ts",
           "operation": "modify",
-          "description": "Replace the static image element displaying LookyLoo-logo.png with a video element that displays the uploaded LookyLoo-gif.mp4 file. Configure the video element with autoplay, loop, muted, and playsInline attributes to ensure continuous playback. Maintain the exact same positioning (centered via flexbox) and styling (max width constraints) currently applied to the logo image. Update the src path to reference the video file in the public assets directory."
+          "description": "Review and fix the actor initialization logic to ensure it properly handles the authenticated state and doesn't fail when the favicon is present. Add defensive checks to prevent 'Actor not available' errors during upload operations. Ensure the actor is fully initialized before allowing upload operations to proceed."
+        },
+        {
+          "path": "frontend/src/pages/UploadPage.tsx",
+          "operation": "modify",
+          "description": "Add explicit actor availability checks before initiating uploads. Ensure the component waits for both authentication and actor initialization to complete before enabling the upload button. Display appropriate loading or error states when the actor is not yet available."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Review and strengthen the enabled conditions in upload-related queries (useUploadFileMetadata, useUploadChunk, useFinalizeUpload) to ensure they only execute when both actor and authentication are ready. Add error handling for actor availability issues."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Restore file picker upload functionality for images and short videos (max 2MB), ensuring files can be selected, uploaded in chunks, and stored in the backend canister",
+      "acceptanceCriteria": [
+        "File picker button opens file selection dialog",
+        "Selected files (images/videos up to 2MB) upload successfully",
+        "Upload progress displays correctly during chunked upload",
+        "Successful uploads generate shareable links as before"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/UploadPage.tsx",
+          "operation": "modify",
+          "description": "Verify and restore the complete file upload flow: file selection validation (images/videos, max 2MB), chunked upload with progress tracking, and shareable link generation. Ensure the file picker correctly displays selected file names. Add robust error handling for upload failures with user-friendly messages. Ensure the upload flow waits for actor availability before proceeding."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Verify the chunked upload mutations (useUploadFileMetadata, useUploadChunk, useFinalizeUpload) correctly orchestrate the multi-step upload process. Ensure proper error propagation and state management throughout the upload lifecycle."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Verify uploaded files display correctly in the UI with shareable links after fixing the upload failure, maintaining the existing UploadsList component behavior",
+      "acceptanceCriteria": [
+        "Uploaded files appear in My Uploads page",
+        "Each file displays metadata (filename, size, type, download count)",
+        "Share links can be copied and used to access files",
+        "File preview and download functionality work on share pages"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/uploads/UploadsList.tsx",
+          "operation": "modify",
+          "description": "Verify the component correctly displays all file metadata (filename, size, type, download count) and provides working copy-to-clipboard functionality for share links. Ensure the delete functionality includes proper confirmation dialogs and query invalidation after deletion."
+        },
+        {
+          "path": "frontend/src/pages/MyUploadsPage.tsx",
+          "operation": "modify",
+          "description": "Verify the page correctly fetches and displays the authenticated user's uploaded files using the UploadsList component. Ensure proper loading states, error handling, and query invalidation after file operations."
+        },
+        {
+          "path": "frontend/src/pages/SharePage.tsx",
+          "operation": "modify",
+          "description": "Verify the public share page correctly fetches file metadata and chunks, reassembles files for preview (images/videos), and provides download functionality with download count tracking. Ensure proper error handling for missing or inaccessible files."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Ensure the favicon at /assets/generated/favicon.dim_32x32.png continues to display in the browser tab while file upload functionality remains working",
+      "acceptanceCriteria": [
+        "Favicon displays correctly in browser tab",
+        "Favicon implementation does not interfere with backend actor initialization",
+        "Both favicon and file uploads work simultaneously"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Verify the favicon link tag correctly references the generated favicon at /assets/generated/favicon.dim_32x32.png. Ensure the favicon implementation does not cause any blocking or timing issues that could affect actor initialization or application bootstrapping."
+        },
+        {
+          "path": "frontend/src/main.tsx",
+          "operation": "modify",
+          "description": "Review the application entry point to ensure the React root initialization, QueryClientProvider setup, and InternetIdentityProvider context do not have timing or race condition issues that could be exacerbated by additional static asset loading (favicon). Ensure proper initialization order."
         }
       ]
     }

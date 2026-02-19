@@ -18,5 +18,6 @@
   "frontend/package.json": "Package configuration with arweave dependency added for client-side file uploads.",
   "frontend/src/main.tsx": "Application entry point that sets up React Query and Internet Identity providers, with CSS import path corrected to ./index.css.",
   "frontend/src/index.css": "Global styles with OKLCH color system using a purple/violet primary palette for light and dark modes, moved to src directory.",
-  "frontend/index.html": "HTML entry point with updated title to \"LookyLoo\""
+  "frontend/index.html": "HTML entry point with updated title \"LookyLoo\" and favicon link tag referencing the optimized 32x32 pixel favicon generated from the LookyLoo logo.",
+  "frontend/src/hooks/useActor.ts": "Backend actor initialization hook that creates an actor instance with the current identity, removing the non-existent _initializeAccessControlWithSecret call that was causing the \"Actor not available\" error."
 }

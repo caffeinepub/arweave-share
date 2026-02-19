@@ -1,6 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
-import { UserProfile, FileMetadata, FileChunk } from '../backend';
+import type { FileMetadata, FileChunk, UserProfile } from '../backend';
+
+const CHUNK_SIZE = 500_000; // 500KB chunks
 
 export function useGetCallerUserProfile() {
   const { actor, isFetching: actorFetching } = useActor();
@@ -27,9 +29,9 @@ export function useSaveCallerUserProfile() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (profile: UserProfile) => {
+    mutationFn: async (name: string) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.saveCallerUserProfile(profile);
+      await actor.saveCallerUserProfile({ name });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['currentUserProfile'] });
@@ -41,68 +43,92 @@ export function useUploadFile() {
   const { actor } = useActor();
   const queryClient = useQueryClient();
 
-  return {
-    uploadMetadata: async ({
-      filename,
-      contentType,
-      size,
-      chunkCount,
+  return useMutation({
+    mutationFn: async ({
+      file,
+      onProgress,
     }: {
-      filename: string;
-      contentType: string;
-      size: bigint;
-      chunkCount: bigint;
+      file: File;
+      onProgress?: (progress: number) => void;
     }) => {
-      if (!actor) throw new Error('Actor not available');
-      const fileId = await actor.uploadFileMetadata(filename, contentType, size, chunkCount);
-      console.log('Upload metadata created with ID:', fileId);
+      if (!actor) {
+        throw new Error('Actor not available. Please ensure you are logged in.');
+      }
+
+      const arrayBuffer = await file.arrayBuffer();
+      const bytes = new Uint8Array(arrayBuffer);
+      const totalChunks = Math.ceil(bytes.length / CHUNK_SIZE);
+
+      // Step 1: Upload metadata
+      const fileId = await actor.uploadFileMetadata(
+        file.name,
+        file.type,
+        BigInt(file.size),
+        BigInt(totalChunks)
+      );
+
+      // Step 2: Upload chunks
+      for (let i = 0; i < totalChunks; i++) {
+        const start = i * CHUNK_SIZE;
+        const end = Math.min(start + CHUNK_SIZE, bytes.length);
+        const chunkData = bytes.slice(start, end);
+
+        const chunk: FileChunk = {
+          id: fileId,
+          chunkIndex: BigInt(i),
+          data: chunkData,
+          size: BigInt(chunkData.length),
+          totalChunks: BigInt(totalChunks),
+        };
+
+        await actor.uploadChunk(fileId, chunk);
+
+        if (onProgress) {
+          const progress = Math.round(((i + 1) / totalChunks) * 100);
+          onProgress(progress);
+        }
+      }
+
+      // Step 3: Finalize upload
+      await actor.finalizeUpload(fileId);
+
+      // Step 4: Share the file to make it accessible via link
+      await actor.shareFile(fileId);
+
       return fileId;
     },
-    uploadChunk: async ({ id, chunk }: { id: string; chunk: FileChunk }) => {
-      if (!actor) throw new Error('Actor not available');
-      return actor.uploadChunk(id, chunk);
-    },
-    finalizeUpload: async (id: string) => {
-      if (!actor) throw new Error('Actor not available');
-      await actor.finalizeUpload(id);
-      console.log('Upload finalized for ID:', id);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myUploads'] });
     },
-  };
+  });
 }
 
 export function useGetMyUploads() {
-  const { actor, isFetching } = useActor();
+  const { actor, isFetching: actorFetching } = useActor();
 
   return useQuery<FileMetadata[]>({
     queryKey: ['myUploads'],
     queryFn: async () => {
-      if (!actor) return [];
+      if (!actor) throw new Error('Actor not available');
       return actor.getMyUploads();
     },
-    enabled: !!actor && !isFetching,
+    enabled: !!actor && !actorFetching,
   });
 }
 
-export function useGetFileMetadata(id: string) {
-  const { actor, isFetching } = useActor();
+export function useGetFileMetadata(fileId: string) {
+  const { actor, isFetching: actorFetching } = useActor();
 
   return useQuery<FileMetadata | null>({
-    queryKey: ['fileMetadata', id],
+    queryKey: ['fileMetadata', fileId],
     queryFn: async () => {
-      if (!actor) {
-        console.error('Actor not available for file ID:', id);
-        return null;
-      }
-
-      console.log('Fetching metadata for file ID:', id);
-
-      // First, try to get from user's uploads (if authenticated and owner)
+      if (!actor) throw new Error('Actor not available');
+      
       try {
+        // Try to get from user's uploads first (if authenticated and owner)
         const uploads = await actor.getMyUploads();
-        const file = uploads.find((u) => u.id === id);
+        const file = uploads.find((u) => u.id === fileId);
         if (file) {
-          console.log('Found file in user uploads:', file);
           return file;
         }
       } catch (err) {
@@ -110,89 +136,78 @@ export function useGetFileMetadata(id: string) {
       }
 
       // Check if file is shared (public access)
-      try {
-        const isShared = await actor.isFileShared(id);
-        console.log('File shared status:', isShared);
-        
-        if (!isShared) {
-          console.error('File is not shared, access denied');
-          return null;
-        }
-
-        // For shared files, get chunks to reconstruct metadata
-        const chunks = await actor.getFileChunks(id);
-        console.log('Retrieved chunks for shared file:', chunks.length);
-        
-        if (chunks.length === 0) {
-          console.error('No chunks found for file ID:', id);
-          return null;
-        }
-
-        // Sort chunks to get first chunk
-        const sortedChunks = [...chunks].sort((a, b) => Number(a.chunkIndex) - Number(b.chunkIndex));
-        const firstChunk = sortedChunks[0];
-        
-        // Calculate total size from all chunks
-        const totalSize = chunks.reduce((sum, chunk) => sum + BigInt(chunk.data.length), BigInt(0));
-
-        // Extract filename from chunk ID (format: "filename_timestamp")
-        const filename = firstChunk.id.split('_').slice(0, -1).join('_') || firstChunk.id;
-
-        // Detect content type from chunk data
-        let contentType = 'application/octet-stream';
-        const firstBytes = new Uint8Array(firstChunk.data.slice(0, 12));
-        
-        // Check magic bytes for common formats
-        if (firstBytes[0] === 0xFF && firstBytes[1] === 0xD8 && firstBytes[2] === 0xFF) {
-          contentType = 'image/jpeg';
-        } else if (firstBytes[0] === 0x89 && firstBytes[1] === 0x50 && firstBytes[2] === 0x4E && firstBytes[3] === 0x47) {
-          contentType = 'image/png';
-        } else if (firstBytes[0] === 0x47 && firstBytes[1] === 0x49 && firstBytes[2] === 0x46) {
-          contentType = 'image/gif';
-        } else if (firstBytes[0] === 0x52 && firstBytes[1] === 0x49 && firstBytes[2] === 0x46 && firstBytes[3] === 0x46) {
-          contentType = 'image/webp';
-        } else if (
-          (firstBytes[4] === 0x66 && firstBytes[5] === 0x74 && firstBytes[6] === 0x79 && firstBytes[7] === 0x70) ||
-          (firstBytes[0] === 0x00 && firstBytes[1] === 0x00 && firstBytes[2] === 0x00)
-        ) {
-          contentType = 'video/mp4';
-        }
-
-        console.log('Reconstructed metadata:', { id, filename, contentType, size: totalSize });
-
-        return {
-          id,
-          filename,
-          contentType,
-          size: totalSize,
-          owner: firstChunk.id as any, // Placeholder - not exposed for shared files
-          uploaded: BigInt(Date.now()) * BigInt(1_000_000), // Approximate
-          downloadCount: BigInt(0), // Will be updated separately
-          isShared: true,
-        } as FileMetadata;
-      } catch (err) {
-        console.error('Error fetching shared file metadata:', err);
-        return null;
+      const isShared = await actor.isFileShared(fileId);
+      
+      if (!isShared) {
+        throw new Error('File is not shared or does not exist');
       }
+
+      // For shared files, get chunks to reconstruct metadata
+      const chunks = await actor.getFileChunks(fileId);
+      
+      if (chunks.length === 0) {
+        throw new Error('No chunks found for file');
+      }
+
+      // Sort chunks to get first chunk
+      const sortedChunks = [...chunks].sort((a, b) => Number(a.chunkIndex) - Number(b.chunkIndex));
+      const firstChunk = sortedChunks[0];
+      
+      // Calculate total size from all chunks
+      const totalSize = chunks.reduce((sum, chunk) => sum + BigInt(chunk.data.length), BigInt(0));
+
+      // Extract filename from chunk ID (format: "filename_timestamp")
+      const filename = firstChunk.id.split('_').slice(0, -1).join('_') || firstChunk.id;
+
+      // Detect content type from chunk data
+      let contentType = 'application/octet-stream';
+      const firstBytes = new Uint8Array(firstChunk.data.slice(0, 12));
+      
+      // Check magic bytes for common formats
+      if (firstBytes[0] === 0xFF && firstBytes[1] === 0xD8 && firstBytes[2] === 0xFF) {
+        contentType = 'image/jpeg';
+      } else if (firstBytes[0] === 0x89 && firstBytes[1] === 0x50 && firstBytes[2] === 0x4E && firstBytes[3] === 0x47) {
+        contentType = 'image/png';
+      } else if (firstBytes[0] === 0x47 && firstBytes[1] === 0x49 && firstBytes[2] === 0x46) {
+        contentType = 'image/gif';
+      } else if (firstBytes[0] === 0x52 && firstBytes[1] === 0x49 && firstBytes[2] === 0x46 && firstBytes[3] === 0x46) {
+        contentType = 'image/webp';
+      } else if (
+        (firstBytes[4] === 0x66 && firstBytes[5] === 0x74 && firstBytes[6] === 0x79 && firstBytes[7] === 0x70) ||
+        (firstBytes[0] === 0x00 && firstBytes[1] === 0x00 && firstBytes[2] === 0x00)
+      ) {
+        contentType = 'video/mp4';
+      }
+
+      return {
+        id: fileId,
+        filename,
+        contentType,
+        size: totalSize,
+        owner: firstChunk.id as any, // Placeholder - not exposed for shared files
+        uploaded: BigInt(Date.now()) * BigInt(1_000_000), // Approximate
+        downloadCount: BigInt(0), // Will be updated separately
+        isShared: true,
+      } as FileMetadata;
     },
-    enabled: !!actor && !isFetching && !!id,
-    retry: false,
+    enabled: !!actor && !actorFetching && !!fileId,
+    retry: 1,
   });
 }
 
-export function useGetFileChunks(id: string) {
-  const { actor, isFetching } = useActor();
+export function useGetFileChunks(fileId: string) {
+  const { actor, isFetching: actorFetching } = useActor();
 
   return useQuery<FileChunk[]>({
-    queryKey: ['fileChunks', id],
+    queryKey: ['fileChunks', fileId],
     queryFn: async () => {
       if (!actor) {
         console.error('Actor not available for fetching chunks');
         return [];
       }
-      console.log('Fetching chunks for file ID:', id);
+      console.log('Fetching chunks for file ID:', fileId);
       try {
-        const chunks = await actor.getFileChunks(id);
+        const chunks = await actor.getFileChunks(fileId);
         console.log('Successfully fetched chunks:', chunks.length);
         return chunks;
       } catch (err) {
@@ -200,25 +215,8 @@ export function useGetFileChunks(id: string) {
         throw err;
       }
     },
-    enabled: !!actor && !isFetching && !!id,
+    enabled: !!actor && !actorFetching && !!fileId,
     retry: false,
-  });
-}
-
-export function useShareFile() {
-  const { actor } = useActor();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (id: string) => {
-      if (!actor) throw new Error('Actor not available');
-      console.log('Sharing file with ID:', id);
-      await actor.shareFile(id);
-      console.log('File shared successfully:', id);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['myUploads'] });
-    },
   });
 }
 
@@ -227,9 +225,9 @@ export function useDeleteFile() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (fileId: string) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.deleteFile(id);
+      await actor.deleteFile(fileId);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myUploads'] });
@@ -241,9 +239,9 @@ export function useIncrementDownloadCount() {
   const { actor } = useActor();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (fileId: string) => {
       if (!actor) throw new Error('Actor not available');
-      return actor.incrementDownloadCount(id);
+      await actor.incrementDownloadCount(fileId);
     },
   });
 }

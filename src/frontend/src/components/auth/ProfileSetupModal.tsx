@@ -33,7 +33,7 @@ export default function ProfileSetupModal() {
     if (!name.trim()) return;
 
     try {
-      await saveProfile.mutateAsync({ name: name.trim() });
+      await saveProfile.mutateAsync(name.trim());
     } catch (error) {
       console.error('Failed to save profile:', error);
     }
@@ -43,7 +43,7 @@ export default function ProfileSetupModal() {
     <Dialog open={showProfileSetup}>
       <DialogContent className="sm:max-w-md" showCloseButton={false}>
         <DialogHeader>
-          <DialogTitle>Welcome to Arweave Share</DialogTitle>
+          <DialogTitle>Welcome to LookyLoo</DialogTitle>
           <DialogDescription>
             Please enter your name to complete your profile setup.
           </DialogDescription>

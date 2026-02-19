@@ -2,10 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-replace-the-static-lookyloo-logo-png-file-in-the-hero-section-with-the-uploaded-lookyloo-gif-mp4-animated-video-file-animated-orange-camera-icon-maintain-the-same-positioning-and-styling-currently-applied-to-the-logo-image-but-render-it-as-a-video-element-instead-of-an-img-element",
-      "featureTitle": "Replace the static LookyLoo-logo.png file in the hero section with the uploaded LookyLoo-gif.mp4 animated video file (animated orange camera icon). Maintain the same positioning and styling currently applied to the logo image, but render it as a video element instead of an img element.",
+      "featureId": "feature-diagnose-and-fix-the-root-cause-of-actor-not-available-error-that-occurs-after-favicon-implementation-ensuring-the-backend-actor-initializes-correctly-for-authenticated-file-uploads",
+      "featureTitle": "Diagnose and fix the root cause of 'Actor not available' error that occurs after favicon implementation, ensuring the backend actor initializes correctly for authenticated file uploads",
       "files": [
-        "frontend/src/components/auth/AuthGate.tsx"
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/UploadPage.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -18,6 +19,27 @@
       ],
       "testIds": [
         "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-restore-file-picker-upload-functionality-for-images-and-short-videos-max-2mb-ensuring-files-can-be-selected-uploaded-in-chunks-and-stored-in-the-backend-canister",
+      "featureTitle": "Restore file picker upload functionality for images and short videos (max 2MB), ensuring files can be selected, uploaded in chunks, and stored in the backend canister",
+      "files": [
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/UploadPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
       ],
       "confidence": "high"
     }
