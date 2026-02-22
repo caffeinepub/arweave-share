@@ -208,7 +208,7 @@ export default function SharePage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Preview */}
+              {/* Preview - Only show for images and videos */}
               {fileUrl && (isImage || isVideo) && (
                 <div className="rounded-lg overflow-hidden bg-muted/50 flex items-center justify-center">
                   {isImage ? (
@@ -226,6 +226,19 @@ export default function SharePage() {
                       Your browser does not support the video tag.
                     </video>
                   ) : null}
+                </div>
+              )}
+
+              {/* For non-media files, show a generic file card */}
+              {!isImage && !isVideo && (
+                <div className="rounded-lg p-8 bg-muted/50 flex flex-col items-center justify-center text-center">
+                  <FileText className="h-16 w-16 text-muted-foreground mb-4" />
+                  <p className="text-sm text-muted-foreground">
+                    Preview not available for this file type
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Click the download button below to access the file
+                  </p>
                 </div>
               )}
 

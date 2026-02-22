@@ -1,73 +1,56 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-19T06:16:56.816Z",
+  "generatedAt": "2026-02-22T23:48:50.897Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 4,
-    "implemented": 2,
+    "total": 3,
+    "implemented": 3,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Diagnose and fix the root cause of 'Actor not available' error that occurs after favicon implementation, ensuring the backend actor initializes correctly for authenticated file uploads",
+        "summary": "Remove the file type restriction on the upload page that currently limits uploads to images and videos only, allowing users to upload any file type",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useActor.ts",
-          "frontend/src/pages/UploadPage.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/pages/UploadPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/UploadPage.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/pages/UploadPage.tsx"
         ]
       },
       {
         "id": "REQ-2",
-        "summary": "Restore file picker upload functionality for images and short videos (max 2MB), ensuring files can be selected, uploaded in chunks, and stored in the backend canister",
+        "summary": "Update the upload page UI text and messaging to reflect that any file type can be uploaded, not just media files",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/UploadPage.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/pages/UploadPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/UploadPage.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/pages/UploadPage.tsx"
         ]
       },
       {
         "id": "REQ-3",
-        "summary": "Verify uploaded files display correctly in the UI with shareable links after fixing the upload failure, maintaining the existing UploadsList component behavior",
-        "status": "missing",
+        "summary": "Ensure the share page handles preview display appropriately for non-media files by showing file metadata and download button without attempting to render previews for unsupported file types",
+        "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/uploads/UploadsList.tsx",
-          "frontend/src/pages/MyUploadsPage.tsx",
           "frontend/src/pages/SharePage.tsx"
         ],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-4",
-        "summary": "Ensure the favicon at /assets/generated/favicon.dim_32x32.png continues to display in the browser tab while file upload functionality remains working",
-        "status": "missing",
-        "plannedFiles": [
-          "frontend/index.html",
-          "frontend/src/main.tsx"
-        ],
-        "matchedFiles": []
+        "matchedFiles": [
+          "frontend/src/pages/SharePage.tsx"
+        ]
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/auth/ProfileSetupModal.tsx",
-    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/SharePage.tsx",
     "frontend/src/pages/UploadPage.tsx",
     "project_state.json",
     "scratch/component-selection.json",

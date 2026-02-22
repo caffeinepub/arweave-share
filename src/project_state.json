@@ -1,52 +1,41 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "LookyLoo - A file upload app where logged-in users can upload images and short videos (max 2MB), stored in backend canister and displayed with shareable links via file picker interface",
-  "architectural_notes": [
-    "File uploads: images and short videos (max 2MB)",
-    "Storage: Backend canister with UI display and shareable links",
-    "Upload interface: File picker (not drag-and-drop)",
-    "Authentication required for uploads"
-  ],
-  "known_issues": [
-    "Favicon implementation repeatedly breaks file upload functionality (6 occurrences)",
-    "Upload failures show 'Actor not available' and 'Upload failed' errors after favicon changes",
-    "File picker broken after favicon modifications"
-  ],
-  "isFixRequest": true,
+  "summary": "LookyLoo - a file upload and sharing app",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-diagnose-and-fix-the-root-cause-of-actor-not-available-error-that-occurs-after-favicon-implementation-ensuring-the-backend-actor-initializes-correctly-for-authenticated-file-uploads",
-      "title": "Diagnose and fix the root cause of 'Actor not available' error that occurs after favicon implementation, ensuring the backend actor initializes correctly for authenticated file uploads",
+      "id": "feature-remove-the-file-type-restriction-on-the-upload-page-that-currently-limits-uploads-to-images-and-videos-only-allowing-users-to-upload-any-file-type",
+      "title": "Remove the file type restriction on the upload page that currently limits uploads to images and videos only, allowing users to upload any file type",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-restore-file-picker-upload-functionality-for-images-and-short-videos-max-2mb-ensuring-files-can-be-selected-uploaded-in-chunks-and-stored-in-the-backend-canister",
-      "title": "Restore file picker upload functionality for images and short videos (max 2MB), ensuring files can be selected, uploaded in chunks, and stored in the backend canister",
+      "id": "feature-update-the-upload-page-ui-text-and-messaging-to-reflect-that-any-file-type-can-be-uploaded-not-just-media-files",
+      "title": "Update the upload page UI text and messaging to reflect that any file type can be uploaded, not just media files",
       "reqIds": [
         "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-share-page-handles-preview-display-appropriately-for-non-media-files-by-showing-file-metadata-and-download-button-without-attempting-to-render-previews-for-unsupported-file-types",
+      "title": "Ensure the share page handles preview display appropriately for non-media files by showing file metadata and download button without attempting to render previews for unsupported file types",
+      "reqIds": [
+        "REQ-3"
       ],
       "version": 1
     }
   ],
   "new_feature_requests": [
     {
-      "id": "AR-3",
-      "summary": "Verify uploaded files display correctly in the UI with shareable links after fixing the upload failure, maintaining the existing UploadsList component behavior",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-4",
-      "summary": "Ensure the favicon at /assets/generated/favicon.dim_32x32.png continues to display in the browser tab while file upload functionality remains working",
-      "reqIds": [
-        "REQ-4"
-      ],
+      "id": "AR-1",
+      "summary": "Expand file upload to accept any file type, not just media files",
+      "reqIds": [],
       "status": "pending"
     }
   ],

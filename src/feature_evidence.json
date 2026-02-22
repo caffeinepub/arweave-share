@@ -2,10 +2,9 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-diagnose-and-fix-the-root-cause-of-actor-not-available-error-that-occurs-after-favicon-implementation-ensuring-the-backend-actor-initializes-correctly-for-authenticated-file-uploads",
-      "featureTitle": "Diagnose and fix the root cause of 'Actor not available' error that occurs after favicon implementation, ensuring the backend actor initializes correctly for authenticated file uploads",
+      "featureId": "feature-remove-the-file-type-restriction-on-the-upload-page-that-currently-limits-uploads-to-images-and-videos-only-allowing-users-to-upload-any-file-type",
+      "featureTitle": "Remove the file type restriction on the upload page that currently limits uploads to images and videos only, allowing users to upload any file type",
       "files": [
-        "frontend/src/hooks/useQueries.ts",
         "frontend/src/pages/UploadPage.tsx"
       ],
       "components": [
@@ -23,10 +22,9 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-restore-file-picker-upload-functionality-for-images-and-short-videos-max-2mb-ensuring-files-can-be-selected-uploaded-in-chunks-and-stored-in-the-backend-canister",
-      "featureTitle": "Restore file picker upload functionality for images and short videos (max 2MB), ensuring files can be selected, uploaded in chunks, and stored in the backend canister",
+      "featureId": "feature-update-the-upload-page-ui-text-and-messaging-to-reflect-that-any-file-type-can-be-uploaded-not-just-media-files",
+      "featureTitle": "Update the upload page UI text and messaging to reflect that any file type can be uploaded, not just media files",
       "files": [
-        "frontend/src/hooks/useQueries.ts",
         "frontend/src/pages/UploadPage.tsx"
       ],
       "components": [
@@ -40,6 +38,26 @@
       ],
       "testIds": [
         "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-share-page-handles-preview-display-appropriately-for-non-media-files-by-showing-file-metadata-and-download-button-without-attempting-to-render-previews-for-unsupported-file-types",
+      "featureTitle": "Ensure the share page handles preview display appropriately for non-media files by showing file metadata and download button without attempting to render previews for unsupported file types",
+      "files": [
+        "frontend/src/pages/SharePage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
       ],
       "confidence": "high"
     }

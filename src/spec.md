@@ -1,13 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Fix the "Actor not available" error that prevents file uploads after favicon implementation.
+**Goal:** Expand file upload functionality to accept any file type, not just images and videos.
 
 **Planned changes:**
-- Diagnose and resolve backend actor initialization issue causing "Actor not available" error
-- Restore file picker upload functionality for images and videos (max 2MB)
-- Ensure chunked upload process works correctly for authenticated users
-- Verify uploaded files display in UI with shareable links after fix
-- Maintain favicon display in browser tab while ensuring uploads work
+- Remove file type restrictions on the upload page to allow all file types
+- Update UI text and messaging to reflect that any file type can be uploaded
+- Ensure share page displays non-media files appropriately with filename, size, and download button
+- Maintain 2MB file size limit for all file types
 
-**User-visible outcome:** Users can successfully select and upload image/video files (up to 2MB) through the file picker, see them in My Uploads with shareable links, while the favicon continues to display in the browser tab.
+**User-visible outcome:** Users can upload and share any file type (PDFs, documents, ZIP files, etc.) through the application, with the same 2MB size limit and sharing functionality that previously worked only for images and videos.

@@ -1,100 +1,70 @@
 {
   "kind": "build_request",
-  "title": "Fix file upload failure caused by favicon implementation",
+  "title": "Expand file upload to accept any file type",
   "projectName": "LookyLoo",
-  "priority": "high",
+  "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Diagnose and fix the root cause of 'Actor not available' error that occurs after favicon implementation, ensuring the backend actor initializes correctly for authenticated file uploads",
-      "target": "both",
+      "text": "Remove the file type restriction on the upload page that currently limits uploads to images and videos only, allowing users to upload any file type",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5",
-          "msg-6"
+          "msg-last"
         ],
         "quotes": [
-          "Actor not available",
-          "Upload failed"
+          "I only want one thing. Right now it can share media files perfectly. But I'd like it to now share any file."
         ]
       },
       "acceptanceCriteria": [
-        "Backend actor initializes successfully for authenticated users",
-        "No 'Actor not available' errors appear in the upload flow",
-        "File upload functionality works after favicon is present in frontend/index.html"
+        "File picker accepts all file types without MIME type restrictions",
+        "No validation error appears for non-media files (PDFs, documents, ZIP files, etc.)",
+        "The 2MB file size limit remains enforced for all file types"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Restore file picker upload functionality for images and short videos (max 2MB), ensuring files can be selected, uploaded in chunks, and stored in the backend canister",
-      "target": "both",
+      "text": "Update the upload page UI text and messaging to reflect that any file type can be uploaded, not just media files",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-3",
-          "msg-4"
+          "msg-last"
         ],
         "quotes": [
-          "the app. the purpose is click upload button, select file, click upload. but response back is upload failed",
-          "any but mostly images and short vids"
+          "I only want one thing. Right now it can share media files perfectly. But I'd like it to now share any file."
         ]
       },
       "acceptanceCriteria": [
-        "File picker button opens file selection dialog",
-        "Selected files (images/videos up to 2MB) upload successfully",
-        "Upload progress displays correctly during chunked upload",
-        "Successful uploads generate shareable links as before"
+        "Upload instructions mention 'any file' or 'all file types' instead of 'images and videos'",
+        "File type validation messages are removed or updated to be file-type agnostic"
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Verify uploaded files display correctly in the UI with shareable links after fixing the upload failure, maintaining the existing UploadsList component behavior",
+      "text": "Ensure the share page handles preview display appropriately for non-media files by showing file metadata and download button without attempting to render previews for unsupported file types",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "Displayed in the UI with a link"
+          "msg-last"
         ]
       },
       "acceptanceCriteria": [
-        "Uploaded files appear in My Uploads page",
-        "Each file displays metadata (filename, size, type, download count)",
-        "Share links can be copied and used to access files",
-        "File preview and download functionality work on share pages"
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Ensure the favicon at /assets/generated/favicon.dim_32x32.png continues to display in the browser tab while file upload functionality remains working",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3"
-        ],
-        "quotes": [
-          "If you could fix it that'd be great but only if you know why it broke"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Favicon displays correctly in browser tab",
-        "Favicon implementation does not interfere with backend actor initialization",
-        "Both favicon and file uploads work simultaneously"
+        "Non-media files (PDFs, documents, etc.) display filename, size, and download button without breaking",
+        "Image and video previews continue to work as before",
+        "No console errors appear when viewing non-media file share pages"
       ]
     }
   ],
   "constraints": [
-    "Do not remove or disable the favicon functionality",
-    "Maintain the existing chunked upload architecture in backend/main.mo",
-    "Preserve the file picker UI shown in the screenshot (Choose File button with file name display)",
-    "Keep the 2MB file size limit for uploads",
-    "Do not modify the authentication flow or Internet Identity integration"
+    "Maintain the existing 2MB file size limit",
+    "Keep all existing file sharing and download functionality intact",
+    "Preserve the chunked upload mechanism for backend storage"
   ],
   "nonGoals": [
-    "Changing the upload UI from file picker to drag-and-drop",
-    "Adding new file type support beyond images and videos",
-    "Modifying the file sharing or download functionality",
-    "Redesigning the favicon or creating new favicon assets"
+    "Increasing the file size limit beyond 2MB",
+    "Adding file type-specific previews for documents or PDFs",
+    "Modifying the backend file storage or chunking logic",
+    "Changing the file sharing URL structure or access control"
   ],
   "imageRequirements": {
     "required": [],

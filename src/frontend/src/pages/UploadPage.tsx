@@ -9,7 +9,6 @@ import { getShareLink } from '../lib/shareLinks';
 import { useNavigate } from '@tanstack/react-router';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/webm'];
 
 export default function UploadPage() {
   const navigate = useNavigate();
@@ -34,12 +33,6 @@ export default function UploadPage() {
 
     if (file.size > MAX_FILE_SIZE) {
       setError('File size must be less than 2MB');
-      setSelectedFile(null);
-      return;
-    }
-
-    if (!ACCEPTED_TYPES.includes(file.type)) {
-      setError('Only images (JPEG, PNG, GIF, WebP) and videos (MP4, WebM) are supported');
       setSelectedFile(null);
       return;
     }
@@ -82,9 +75,9 @@ export default function UploadPage() {
       {/* Hero Section - Reduced by 25% */}
       <div className="bg-gradient-to-b from-primary/10 to-background py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl font-bold mb-3">Upload Media</h1>
+          <h1 className="text-4xl font-bold mb-3">Upload & Share Files</h1>
           <p className="text-lg text-muted-foreground mb-2">
-            Share your images and videos securely on the Internet Computer
+            Share any file securely on the Internet Computer
           </p>
           <p className="text-sm text-muted-foreground">
             Share a file with anyone through a link. Those you share with won't need a login. To Upload, you must sign in with Internet Identity (IID2)
@@ -98,13 +91,13 @@ export default function UploadPage() {
           <CardHeader>
             <CardTitle>Upload File</CardTitle>
             <CardDescription>
-              Select an image or video (max 2MB) to upload. Files are stored securely and you can share them with a link.
+              Select any file (max 2MB) to upload. Files are stored securely and you can share them with a link.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* File Selection */}
             <div>
-              <label className="block text-sm font-medium mb-2">Select Image or Video</label>
+              <label className="block text-sm font-medium mb-2">Select File</label>
               <div className="flex items-center gap-4">
                 <Button
                   variant="outline"
@@ -120,7 +113,6 @@ export default function UploadPage() {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/*,video/*"
                 onChange={handleFileSelect}
                 className="hidden"
               />

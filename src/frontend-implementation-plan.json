@@ -1,101 +1,52 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix file upload failure caused by favicon implementation",
+  "title": "Expand file upload to accept any file type",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Diagnose and fix the root cause of 'Actor not available' error that occurs after favicon implementation, ensuring the backend actor initializes correctly for authenticated file uploads",
+      "summary": "Remove the file type restriction that limits uploads to images and videos only, allowing any file type",
       "acceptanceCriteria": [
-        "Backend actor initializes successfully for authenticated users",
-        "No 'Actor not available' errors appear in the upload flow",
-        "File upload functionality works after favicon is present in frontend/index.html"
+        "File picker accepts all file types without MIME type restrictions",
+        "No validation error appears for non-media files (PDFs, documents, ZIP files, etc.)",
+        "The 2MB file size limit remains enforced for all file types"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useActor.ts",
-          "operation": "modify",
-          "description": "Review and fix the actor initialization logic to ensure it properly handles the authenticated state and doesn't fail when the favicon is present. Add defensive checks to prevent 'Actor not available' errors during upload operations. Ensure the actor is fully initialized before allowing upload operations to proceed."
-        },
-        {
           "path": "frontend/src/pages/UploadPage.tsx",
           "operation": "modify",
-          "description": "Add explicit actor availability checks before initiating uploads. Ensure the component waits for both authentication and actor initialization to complete before enabling the upload button. Display appropriate loading or error states when the actor is not yet available."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Review and strengthen the enabled conditions in upload-related queries (useUploadFileMetadata, useUploadChunk, useFinalizeUpload) to ensure they only execute when both actor and authentication are ready. Add error handling for actor availability issues."
+          "description": "Remove the accept='image/*,video/*' attribute from the file input element to allow all file types. Remove or modify the file type validation logic in the handleFileChange handler that currently checks for image or video MIME types and displays 'Please select an image or video file' error. Keep the 2MB size validation intact."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Restore file picker upload functionality for images and short videos (max 2MB), ensuring files can be selected, uploaded in chunks, and stored in the backend canister",
+      "summary": "Update upload page UI text to reflect that any file type can be uploaded",
       "acceptanceCriteria": [
-        "File picker button opens file selection dialog",
-        "Selected files (images/videos up to 2MB) upload successfully",
-        "Upload progress displays correctly during chunked upload",
-        "Successful uploads generate shareable links as before"
+        "Upload instructions mention 'any file' or 'all file types' instead of 'images and videos'",
+        "File type validation messages are removed or updated to be file-type agnostic"
       ],
       "file_operations": [
         {
           "path": "frontend/src/pages/UploadPage.tsx",
           "operation": "modify",
-          "description": "Verify and restore the complete file upload flow: file selection validation (images/videos, max 2MB), chunked upload with progress tracking, and shareable link generation. Ensure the file picker correctly displays selected file names. Add robust error handling for upload failures with user-friendly messages. Ensure the upload flow waits for actor availability before proceeding."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Verify the chunked upload mutations (useUploadFileMetadata, useUploadChunk, useFinalizeUpload) correctly orchestrate the multi-step upload process. Ensure proper error propagation and state management throughout the upload lifecycle."
+          "description": "Update the page heading from 'Upload & Share Media' to 'Upload & Share Files'. Change the instructional text from 'Select an image or video to share with others' to 'Select any file to share with others'. Update any remaining references to 'media' or 'image/video' to be file-type agnostic."
         }
       ]
     },
     {
       "id": "REQ-3",
-      "summary": "Verify uploaded files display correctly in the UI with shareable links after fixing the upload failure, maintaining the existing UploadsList component behavior",
+      "summary": "Ensure the share page handles preview display for non-media files with metadata and download button",
       "acceptanceCriteria": [
-        "Uploaded files appear in My Uploads page",
-        "Each file displays metadata (filename, size, type, download count)",
-        "Share links can be copied and used to access files",
-        "File preview and download functionality work on share pages"
+        "Non-media files (PDFs, documents, etc.) display filename, size, and download button without breaking",
+        "Image and video previews continue to work as before",
+        "No console errors appear when viewing non-media file share pages"
       ],
       "file_operations": [
-        {
-          "path": "frontend/src/components/uploads/UploadsList.tsx",
-          "operation": "modify",
-          "description": "Verify the component correctly displays all file metadata (filename, size, type, download count) and provides working copy-to-clipboard functionality for share links. Ensure the delete functionality includes proper confirmation dialogs and query invalidation after deletion."
-        },
-        {
-          "path": "frontend/src/pages/MyUploadsPage.tsx",
-          "operation": "modify",
-          "description": "Verify the page correctly fetches and displays the authenticated user's uploaded files using the UploadsList component. Ensure proper loading states, error handling, and query invalidation after file operations."
-        },
         {
           "path": "frontend/src/pages/SharePage.tsx",
           "operation": "modify",
-          "description": "Verify the public share page correctly fetches file metadata and chunks, reassembles files for preview (images/videos), and provides download functionality with download count tracking. Ensure proper error handling for missing or inaccessible files."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Ensure the favicon at /assets/generated/favicon.dim_32x32.png continues to display in the browser tab while file upload functionality remains working",
-      "acceptanceCriteria": [
-        "Favicon displays correctly in browser tab",
-        "Favicon implementation does not interfere with backend actor initialization",
-        "Both favicon and file uploads work simultaneously"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/index.html",
-          "operation": "modify",
-          "description": "Verify the favicon link tag correctly references the generated favicon at /assets/generated/favicon.dim_32x32.png. Ensure the favicon implementation does not cause any blocking or timing issues that could affect actor initialization or application bootstrapping."
-        },
-        {
-          "path": "frontend/src/main.tsx",
-          "operation": "modify",
-          "description": "Review the application entry point to ensure the React root initialization, QueryClientProvider setup, and InternetIdentityProvider context do not have timing or race condition issues that could be exacerbated by additional static asset loading (favicon). Ensure proper initialization order."
+          "description": "Modify the preview rendering logic to conditionally display image/video previews only when the contentType starts with 'image/' or 'video/'. For all other file types, display a generic file icon or card showing the filename and file type badge without attempting to render a preview. Ensure the download button and file metadata (size, name, download count) remain visible for all file types. Add error boundary handling to prevent console errors when non-media files are encountered."
         }
       ]
     }
