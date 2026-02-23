@@ -1,32 +1,32 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "LookyLoo - a file upload and sharing app",
+  "summary": "New project",
   "architectural_notes": [],
   "known_issues": [],
   "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-remove-the-file-type-restriction-on-the-upload-page-that-currently-limits-uploads-to-images-and-videos-only-allowing-users-to-upload-any-file-type",
-      "title": "Remove the file type restriction on the upload page that currently limits uploads to images and videos only, allowing users to upload any file type",
+      "id": "feature-increase-the-maximum-file-upload-size-limit-from-2mb-to-20mb-for-all-file-types-in-the-frontend-upload-validation",
+      "title": "Increase the maximum file upload size limit from 2MB to 20MB for all file types in the frontend upload validation",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-update-the-upload-page-ui-text-and-messaging-to-reflect-that-any-file-type-can-be-uploaded-not-just-media-files",
-      "title": "Update the upload page UI text and messaging to reflect that any file type can be uploaded, not just media files",
+      "id": "feature-add-a-warning-message-on-the-upload-page-that-appears-when-users-select-or-drag-files-larger-than-15mb-informing-them-that-the-upload-might-take-longer",
+      "title": "Add a warning message on the upload page that appears when users select or drag files larger than 15MB, informing them that the upload might take longer",
       "reqIds": [
-        "REQ-2"
+        "REQ-3"
       ],
       "version": 1
     },
     {
-      "id": "feature-ensure-the-share-page-handles-preview-display-appropriately-for-non-media-files-by-showing-file-metadata-and-download-button-without-attempting-to-render-previews-for-unsupported-file-types",
-      "title": "Ensure the share page handles preview display appropriately for non-media files by showing file metadata and download button without attempting to render previews for unsupported file types",
+      "id": "feature-update-the-file-size-limit-text-displayed-on-the-upload-page-from-2mb-to-20mb-to-reflect-the-new-limit",
+      "title": "Update the file size limit text displayed on the upload page from '2MB' to '20MB' to reflect the new limit",
       "reqIds": [
-        "REQ-3"
+        "REQ-4"
       ],
       "version": 1
     }
@@ -34,8 +34,22 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Expand file upload to accept any file type, not just media files",
+      "summary": "Increase file upload limit from 2MB to 20MB for all file types",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Add warning message for files larger than 15MB",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Update the backend chunk size handling and storage to accommodate files up to 20MB, ensuring the existing 500KB chunk size can handle the larger total file size",
+      "reqIds": [
+        "REQ-2"
+      ],
       "status": "pending"
     }
   ],

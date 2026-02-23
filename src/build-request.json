@@ -1,70 +1,86 @@
 {
   "kind": "build_request",
-  "title": "Expand file upload to accept any file type",
+  "title": "Increase file upload limit to 20MB with size warning",
   "projectName": "LookyLoo",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Remove the file type restriction on the upload page that currently limits uploads to images and videos only, allowing users to upload any file type",
+      "text": "Increase the maximum file upload size limit from 2MB to 20MB for all file types in the frontend upload validation",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-last"
+          "msg-user-1"
         ],
         "quotes": [
-          "I only want one thing. Right now it can share media files perfectly. But I'd like it to now share any file."
+          "all file types"
         ]
       },
       "acceptanceCriteria": [
-        "File picker accepts all file types without MIME type restrictions",
-        "No validation error appears for non-media files (PDFs, documents, ZIP files, etc.)",
-        "The 2MB file size limit remains enforced for all file types"
+        "Users can successfully upload files up to 20MB in size",
+        "The file size validation reflects the new 20MB limit",
+        "All file types are supported at the 20MB limit"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Update the upload page UI text and messaging to reflect that any file type can be uploaded, not just media files",
-      "target": "frontend",
+      "text": "Update the backend chunk size handling and storage to accommodate files up to 20MB, ensuring the existing 500KB chunk size can handle the larger total file size",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-last"
-        ],
-        "quotes": [
-          "I only want one thing. Right now it can share media files perfectly. But I'd like it to now share any file."
+          "msg-user-1"
         ]
       },
       "acceptanceCriteria": [
-        "Upload instructions mention 'any file' or 'all file types' instead of 'images and videos'",
-        "File type validation messages are removed or updated to be file-type agnostic"
+        "Backend accepts and stores files up to 20MB without errors",
+        "Chunked upload process works correctly for files between 2MB and 20MB",
+        "File reassembly on download works for larger files"
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Ensure the share page handles preview display appropriately for non-media files by showing file metadata and download button without attempting to render previews for unsupported file types",
+      "text": "Add a warning message on the upload page that appears when users select or drag files larger than 15MB, informing them that the upload might take longer",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-last"
+          "msg-user-3"
+        ],
+        "quotes": [
+          "Should there be any warning or confirmation when users try to upload files larger than, say, 15MB"
         ]
       },
       "acceptanceCriteria": [
-        "Non-media files (PDFs, documents, etc.) display filename, size, and download button without breaking",
-        "Image and video previews continue to work as before",
-        "No console errors appear when viewing non-media file share pages"
+        "Warning message displays when a file larger than 15MB is selected",
+        "Warning message clearly communicates that larger files may take longer to upload",
+        "Warning does not prevent the upload, just informs the user",
+        "Warning appears before the upload starts"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Update the file size limit text displayed on the upload page from '2MB' to '20MB' to reflect the new limit",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All UI text references to file size limits show '20MB' instead of '2MB'",
+        "Upload page displays the correct maximum file size"
       ]
     }
   ],
   "constraints": [
-    "Maintain the existing 2MB file size limit",
-    "Keep all existing file sharing and download functionality intact",
-    "Preserve the chunked upload mechanism for backend storage"
+    "Keep the existing simple loading indicator without adding a progress bar",
+    "Maintain the existing 500KB chunk size for uploads",
+    "Do not change the file type handling - all file types remain supported"
   ],
   "nonGoals": [
-    "Increasing the file size limit beyond 2MB",
-    "Adding file type-specific previews for documents or PDFs",
-    "Modifying the backend file storage or chunking logic",
-    "Changing the file sharing URL structure or access control"
+    "Adding a detailed progress bar or percentage indicator",
+    "Implementing different size limits for different file types",
+    "Changing the chunk upload mechanism",
+    "Adding file compression or optimization"
   ],
   "imageRequirements": {
     "required": [],

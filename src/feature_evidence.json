@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-remove-the-file-type-restriction-on-the-upload-page-that-currently-limits-uploads-to-images-and-videos-only-allowing-users-to-upload-any-file-type",
-      "featureTitle": "Remove the file type restriction on the upload page that currently limits uploads to images and videos only, allowing users to upload any file type",
+      "featureId": "feature-increase-the-maximum-file-upload-size-limit-from-2mb-to-20mb-for-all-file-types-in-the-frontend-upload-validation",
+      "featureTitle": "Increase the maximum file upload size limit from 2MB to 20MB for all file types in the frontend upload validation",
       "files": [
         "frontend/src/pages/UploadPage.tsx"
       ],
@@ -22,8 +22,8 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-the-upload-page-ui-text-and-messaging-to-reflect-that-any-file-type-can-be-uploaded-not-just-media-files",
-      "featureTitle": "Update the upload page UI text and messaging to reflect that any file type can be uploaded, not just media files",
+      "featureId": "feature-add-a-warning-message-on-the-upload-page-that-appears-when-users-select-or-drag-files-larger-than-15mb-informing-them-that-the-upload-might-take-longer",
+      "featureTitle": "Add a warning message on the upload page that appears when users select or drag files larger than 15MB, informing them that the upload might take longer",
       "files": [
         "frontend/src/pages/UploadPage.tsx"
       ],
@@ -37,15 +37,15 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-2"
+        "REQ-3"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-ensure-the-share-page-handles-preview-display-appropriately-for-non-media-files-by-showing-file-metadata-and-download-button-without-attempting-to-render-previews-for-unsupported-file-types",
-      "featureTitle": "Ensure the share page handles preview display appropriately for non-media files by showing file metadata and download button without attempting to render previews for unsupported file types",
+      "featureId": "feature-update-the-file-size-limit-text-displayed-on-the-upload-page-from-2mb-to-20mb-to-reflect-the-new-limit",
+      "featureTitle": "Update the file size limit text displayed on the upload page from '2MB' to '20MB' to reflect the new limit",
       "files": [
-        "frontend/src/pages/SharePage.tsx"
+        "frontend/src/pages/UploadPage.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -57,7 +57,7 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-3"
+        "REQ-4"
       ],
       "confidence": "high"
     }

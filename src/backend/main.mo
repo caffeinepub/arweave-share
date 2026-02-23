@@ -16,6 +16,9 @@ actor {
   include MixinAuthorization(accessControlState);
   include MixinStorage();
 
+  let chunkSize = 500_000;
+  let maxFileSize = 20_000_000; // 20MB
+
   public type UserProfile = {
     name : Text;
   };
@@ -78,6 +81,10 @@ actor {
   ) : async Text {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: You must log in to upload files");
+    };
+
+    if (size > maxFileSize) {
+      Runtime.trap("File size exceeds 20MB limit");
     };
 
     let id = filename # "_" # Time.now().toText();
@@ -274,3 +281,4 @@ actor {
     count;
   };
 };
+

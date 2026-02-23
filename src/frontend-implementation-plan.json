@@ -1,52 +1,53 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Expand file upload to accept any file type",
+  "title": "Increase file upload limit to 20MB with size warning",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Remove the file type restriction that limits uploads to images and videos only, allowing any file type",
+      "summary": "Increase maximum file upload size from 2MB to 20MB in frontend validation",
       "acceptanceCriteria": [
-        "File picker accepts all file types without MIME type restrictions",
-        "No validation error appears for non-media files (PDFs, documents, ZIP files, etc.)",
-        "The 2MB file size limit remains enforced for all file types"
+        "Users can successfully upload files up to 20MB in size",
+        "The file size validation reflects the new 20MB limit",
+        "All file types are supported at the 20MB limit"
       ],
       "file_operations": [
         {
           "path": "frontend/src/pages/UploadPage.tsx",
           "operation": "modify",
-          "description": "Remove the accept='image/*,video/*' attribute from the file input element to allow all file types. Remove or modify the file type validation logic in the handleFileChange handler that currently checks for image or video MIME types and displays 'Please select an image or video file' error. Keep the 2MB size validation intact."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Update upload page UI text to reflect that any file type can be uploaded",
-      "acceptanceCriteria": [
-        "Upload instructions mention 'any file' or 'all file types' instead of 'images and videos'",
-        "File type validation messages are removed or updated to be file-type agnostic"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/UploadPage.tsx",
-          "operation": "modify",
-          "description": "Update the page heading from 'Upload & Share Media' to 'Upload & Share Files'. Change the instructional text from 'Select an image or video to share with others' to 'Select any file to share with others'. Update any remaining references to 'media' or 'image/video' to be file-type agnostic."
+          "description": "Update the MAX_FILE_SIZE constant from 2MB (2 * 1024 * 1024) to 20MB (20 * 1024 * 1024) in the file size validation logic within handleFileSelect and handleDrop functions"
         }
       ]
     },
     {
       "id": "REQ-3",
-      "summary": "Ensure the share page handles preview display for non-media files with metadata and download button",
+      "summary": "Add warning message for files larger than 15MB to inform users about longer upload times",
       "acceptanceCriteria": [
-        "Non-media files (PDFs, documents, etc.) display filename, size, and download button without breaking",
-        "Image and video previews continue to work as before",
-        "No console errors appear when viewing non-media file share pages"
+        "Warning message displays when a file larger than 15MB is selected",
+        "Warning message clearly communicates that larger files may take longer to upload",
+        "Warning does not prevent the upload, just informs the user",
+        "Warning appears before the upload starts"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/SharePage.tsx",
+          "path": "frontend/src/pages/UploadPage.tsx",
           "operation": "modify",
-          "description": "Modify the preview rendering logic to conditionally display image/video previews only when the contentType starts with 'image/' or 'video/'. For all other file types, display a generic file icon or card showing the filename and file type badge without attempting to render a preview. Ensure the download button and file metadata (size, name, download count) remain visible for all file types. Add error boundary handling to prevent console errors when non-media files are encountered."
+          "description": "Add a state variable to track when a file larger than 15MB is selected. In handleFileSelect and handleDrop functions, check if file size exceeds 15MB (15 * 1024 * 1024) and set the warning state. Display a warning message component (using existing toast system or inline alert) that shows 'Large file detected. Files over 15MB may take longer to upload.' before the upload begins"
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Update UI text to display new 20MB file size limit",
+      "acceptanceCriteria": [
+        "All UI text references to file size limits show '20MB' instead of '2MB'",
+        "Upload page displays the correct maximum file size"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/UploadPage.tsx",
+          "operation": "modify",
+          "description": "Update all text content that displays the file size limit from '2MB' to '20MB'. This includes the helper text shown in the upload area and any error messages that reference the maximum file size"
         }
       ]
     }

@@ -1,18 +1,18 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-22T23:48:50.897Z",
+  "generatedAt": "2026-02-23T02:24:08.568Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
+    "total": 4,
     "implemented": 3,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Remove the file type restriction on the upload page that currently limits uploads to images and videos only, allowing users to upload any file type",
+        "summary": "Increase the maximum file upload size limit from 2MB to 20MB for all file types in the frontend upload validation",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/pages/UploadPage.tsx"
@@ -23,7 +23,14 @@
       },
       {
         "id": "REQ-2",
-        "summary": "Update the upload page UI text and messaging to reflect that any file type can be uploaded, not just media files",
+        "summary": "Update the backend chunk size handling and storage to accommodate files up to 20MB, ensuring the existing 500KB chunk size can handle the larger total file size",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Add a warning message on the upload page that appears when users select or drag files larger than 15MB, informing them that the upload might take longer",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/pages/UploadPage.tsx"
@@ -33,24 +40,24 @@
         ]
       },
       {
-        "id": "REQ-3",
-        "summary": "Ensure the share page handles preview display appropriately for non-media files by showing file metadata and download button without attempting to render previews for unsupported file types",
+        "id": "REQ-4",
+        "summary": "Update the file size limit text displayed on the upload page from '2MB' to '20MB' to reflect the new limit",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/SharePage.tsx"
+          "frontend/src/pages/UploadPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/SharePage.tsx"
+          "frontend/src/pages/UploadPage.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
+    "backend/main.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/pages/SharePage.tsx",
     "frontend/src/pages/UploadPage.tsx",
     "project_state.json",
     "scratch/component-selection.json",

@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Upload, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
+import { Upload, AlertCircle, CheckCircle2, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -8,7 +8,8 @@ import { useUploadFile } from '../hooks/useQueries';
 import { getShareLink } from '../lib/shareLinks';
 import { useNavigate } from '@tanstack/react-router';
 
-const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
+const LARGE_FILE_WARNING_SIZE = 15 * 1024 * 1024; // 15MB
 
 export default function UploadPage() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export default function UploadPage() {
   const [error, setError] = useState<string>('');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [shareLink, setShareLink] = useState<string>('');
+  const [showLargeFileWarning, setShowLargeFileWarning] = useState(false);
 
   const uploadMutation = useUploadFile();
 
@@ -25,6 +27,7 @@ export default function UploadPage() {
     setError('');
     setShareLink('');
     setUploadProgress(0);
+    setShowLargeFileWarning(false);
 
     if (!file) {
       setSelectedFile(null);
@@ -32,9 +35,14 @@ export default function UploadPage() {
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      setError('File size must be less than 2MB');
+      setError('File size must be less than 20MB');
       setSelectedFile(null);
       return;
+    }
+
+    // Show warning for files larger than 15MB
+    if (file.size > LARGE_FILE_WARNING_SIZE) {
+      setShowLargeFileWarning(true);
     }
 
     setSelectedFile(file);
@@ -58,6 +66,7 @@ export default function UploadPage() {
       const link = getShareLink(fileId);
       setShareLink(link);
       setSelectedFile(null);
+      setShowLargeFileWarning(false);
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
@@ -91,7 +100,7 @@ export default function UploadPage() {
           <CardHeader>
             <CardTitle>Upload File</CardTitle>
             <CardDescription>
-              Select any file (max 2MB) to upload. Files are stored securely and you can share them with a link.
+              Select any file (max 20MB) to upload. Files are stored securely and you can share them with a link.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -118,10 +127,20 @@ export default function UploadPage() {
               />
               {selectedFile && (
                 <p className="text-xs text-muted-foreground mt-2">
-                  Selected: {selectedFile.name} ({(selectedFile.size / 1024).toFixed(2)} KB)
+                  Selected: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
                 </p>
               )}
             </div>
+
+            {/* Large File Warning */}
+            {showLargeFileWarning && !isUploading && !shareLink && (
+              <Alert>
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription>
+                  Large file detected. Files over 15MB may take longer to upload.
+                </AlertDescription>
+              </Alert>
+            )}
 
             {/* Error Display */}
             {error && (
