@@ -1,12 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Increase file upload limit to 20MB and add a warning for large files.
+**Goal:** Roll back the application to Version 21 to restore working file upload functionality.
 
 **Planned changes:**
-- Increase maximum file upload size from 2MB to 20MB for all file types
-- Update backend to handle files up to 20MB with existing chunk mechanism
-- Add warning message when users select files larger than 15MB
-- Update UI text to display new 20MB limit
+- Revert all code changes from Version 22 deployment
+- Restore backend actor accessibility from frontend
+- Ensure file upload functionality works without errors
 
-**User-visible outcome:** Users can upload files up to 20MB with a helpful warning for larger files, seeing the updated size limit on the upload page.
+**User-visible outcome:** Users can successfully upload files without encountering "Actor not available" errors, with all Version 21 features fully restored.

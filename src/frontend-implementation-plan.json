@@ -1,53 +1,51 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Increase file upload limit to 20MB with size warning",
+  "title": "Roll back to Version 21",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Increase maximum file upload size from 2MB to 20MB in frontend validation",
+      "summary": "Revert all changes from Version 22 deployment to restore Version 21 functionality",
       "acceptanceCriteria": [
-        "Users can successfully upload files up to 20MB in size",
-        "The file size validation reflects the new 20MB limit",
-        "All file types are supported at the 20MB limit"
+        "File upload functionality works without 'Actor not available' error",
+        "Backend actor is properly accessible from frontend",
+        "All features that worked in Version 21 are restored"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/UploadPage.tsx",
+          "path": "frontend/src/hooks/useActor.ts",
           "operation": "modify",
-          "description": "Update the MAX_FILE_SIZE constant from 2MB (2 * 1024 * 1024) to 20MB (20 * 1024 * 1024) in the file size validation logic within handleFileSelect and handleDrop functions"
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Add warning message for files larger than 15MB to inform users about longer upload times",
-      "acceptanceCriteria": [
-        "Warning message displays when a file larger than 15MB is selected",
-        "Warning message clearly communicates that larger files may take longer to upload",
-        "Warning does not prevent the upload, just informs the user",
-        "Warning appears before the upload starts"
-      ],
-      "file_operations": [
+          "description": "Restore Version 21 actor initialization logic to ensure backend actor is properly available before any operations. Review the actor creation flow, authentication handling, and enabled conditions to match the working Version 21 state."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Restore Version 21 query hook implementations for file upload operations. Ensure proper actor availability checks and enabled conditions match the working state before Version 22 changes were introduced."
+        },
         {
           "path": "frontend/src/pages/UploadPage.tsx",
           "operation": "modify",
-          "description": "Add a state variable to track when a file larger than 15MB is selected. In handleFileSelect and handleDrop functions, check if file size exceeds 15MB (15 * 1024 * 1024) and set the warning state. Display a warning message component (using existing toast system or inline alert) that shows 'Large file detected. Files over 15MB may take longer to upload.' before the upload begins"
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Update UI text to display new 20MB file size limit",
-      "acceptanceCriteria": [
-        "All UI text references to file size limits show '20MB' instead of '2MB'",
-        "Upload page displays the correct maximum file size"
-      ],
-      "file_operations": [
+          "description": "Restore Version 21 upload page implementation to ensure proper actor dependency handling and upload flow. Verify all actor calls use the correct patterns that worked in Version 21."
+        },
         {
-          "path": "frontend/src/pages/UploadPage.tsx",
+          "path": "frontend/src/main.tsx",
           "operation": "modify",
-          "description": "Update all text content that displays the file size limit from '2MB' to '20MB'. This includes the helper text shown in the upload area and any error messages that reference the maximum file size"
+          "description": "Restore Version 21 application entry point configuration including QueryClientProvider and InternetIdentityProvider setup to match the working initialization sequence."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Restore Version 21 router configuration and route setup to ensure proper component mounting order and authentication flow that enabled working file uploads."
+        },
+        {
+          "path": "frontend/src/components/auth/AuthGate.tsx",
+          "operation": "modify",
+          "description": "Restore Version 21 authentication guard logic to ensure users are properly authenticated before accessing upload functionality and that actor is available when needed."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Restore Version 21 layout component to match the working application structure and component initialization order."
         }
       ]
     }

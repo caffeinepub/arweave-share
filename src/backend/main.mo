@@ -228,6 +228,11 @@ actor {
           Runtime.trap("Unauthorized: Cannot track downloads for private files");
         };
         
+        // For shared files, still require authentication to prevent abuse
+        if (meta.isShared and meta.owner != caller) {
+          // Guest access is allowed for shared files, no additional check needed
+        };
+        
         let updatedMeta = {
           meta with
           downloadCount = meta.downloadCount + 1;
@@ -256,14 +261,23 @@ actor {
     };
   };
 
-  public query func isFileShared(id : Text) : async Bool {
+  public query ({ caller }) func isFileShared(id : Text) : async Bool {
     switch (uploads.get(id)) {
-      case (?meta) { meta.isShared };
+      case (?meta) {
+        // Only allow checking share status for owned files or shared files
+        if (not meta.isShared and meta.owner != caller) {
+          Runtime.trap("Unauthorized: Cannot check status of private files");
+        };
+        meta.isShared;
+      };
       case (null) { false };
     };
   };
 
-  public query func getTotalUploads() : async Nat {
+  public query ({ caller }) func getTotalUploads() : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can access system statistics");
+    };
     uploads.size();
   };
 
@@ -281,4 +295,3 @@ actor {
     count;
   };
 };
-

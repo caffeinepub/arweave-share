@@ -108,7 +108,7 @@ export default function SharePage() {
   // Show loading state
   if (isLoading || chunksLoading) {
     return (
-      <div className="container mx-auto px-4 py-12 max-w-2xl">
+      <div className="dark container mx-auto px-4 py-12 max-w-2xl">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold tracking-tight mb-3">Shared File</h1>
           <p className="text-lg text-muted-foreground">
@@ -131,7 +131,7 @@ export default function SharePage() {
   // Show error state
   if ((error || chunksError) && isFetched) {
     return (
-      <div className="container mx-auto px-4 py-12 max-w-2xl">
+      <div className="dark container mx-auto px-4 py-12 max-w-2xl">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold tracking-tight mb-3">Shared File</h1>
           <p className="text-lg text-muted-foreground">
@@ -156,7 +156,7 @@ export default function SharePage() {
   // Show file not found if no metadata after loading
   if (!metadata && isFetched) {
     return (
-      <div className="container mx-auto px-4 py-12 max-w-2xl">
+      <div className="dark container mx-auto px-4 py-12 max-w-2xl">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold tracking-tight mb-3">Shared File</h1>
           <p className="text-lg text-muted-foreground">
@@ -179,7 +179,7 @@ export default function SharePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-2xl">
+    <div className="dark container mx-auto px-4 py-12 max-w-2xl">
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold tracking-tight mb-3">Shared File</h1>
         <p className="text-lg text-muted-foreground">

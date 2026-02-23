@@ -8,7 +8,7 @@
   "frontend/src/components/uploads/UploadsList.tsx": "Reusable list component displaying file metadata cards with thumbnails icons, file info, copy link, view, and delete actions plus empty state.",
   "frontend/src/pages/UploadPage.tsx": "Upload page with file selection (any file type, max 20MB), chunked upload to ICP backend with progress tracking, large file warning for files over 15MB, and shareable link generation after successful upload, featuring a hero section reduced by 25% with proportionally scaled text and updated messaging about sharing and authentication requirements.",
   "frontend/src/pages/MyUploadsPage.tsx": "Authenticated page displaying user's uploaded media files with management actions including view, copy share link, and delete functionality.",
-  "frontend/src/pages/SharePage.tsx": "Public share page that fetches and displays shared files with improved loading states, error handling, debug logging, conditional rendering for image/video previews, and a generic file card with download button for non-media file types.",
+  "frontend/src/pages/SharePage.tsx": "Public share page that forces dark theme by adding 'dark' class to all root containers, ensuring the footer \"Follow me on X\" icon is visible for all users accessing shared links regardless of their system preferences, with improved loading states, error handling, and conditional rendering for image/video previews.",
   "frontend/src/hooks/useQueries.ts": "React Query hooks for backend operations with improved error handling, detailed logging for debugging file access issues, and enhanced metadata reconstruction from chunks for shared files including content type detection via magic bytes.",
   "frontend/src/lib/arweaveClient.ts": "Arweave client implementation using direct HTTP API calls and Web Crypto API for signing with proper BufferSource type casting, avoiding the need for the arweave npm package dependency.",
   "frontend/src/lib/shareLinks.ts": "Helper function to generate IC-routed share links from share IDs.",
@@ -19,5 +19,5 @@
   "frontend/src/main.tsx": "Application entry point that sets up React Query and Internet Identity providers, with CSS import path corrected to ./index.css.",
   "frontend/src/index.css": "Global styles with OKLCH color system using a purple/violet primary palette for light and dark modes, moved to src directory.",
   "frontend/index.html": "HTML entry point with updated title \"LookyLoo\" and favicon link tag referencing the optimized 32x32 pixel favicon generated from the LookyLoo logo.",
-  "frontend/src/hooks/useActor.ts": "Backend actor initialization hook that creates an actor instance with the current identity, removing the non-existent _initializeAccessControlWithSecret call that was causing the \"Actor not available\" error."
+  "frontend/src/hooks/useActor.ts": "Backend actor initialization hook that creates an actor instance with the current identity, properly handling both authenticated and anonymous users without calling non-existent initialization methods."
 }
